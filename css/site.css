@@ -248,3 +248,8 @@ select{width:100%;font:16px Inter;padding:11px 14px;border:1px solid var(--line)
   .rgchips{margin:0 0 18px}
 }
 .rgchips{margin:0 0 22px}
+.cal button.xmas{background:linear-gradient(160deg,#0f2a1e,#1d4a33);color:#fff;border-color:#0f2a1e;cursor:default;opacity:1;text-decoration:none}
+.cal button.xmas::after{display:none}
+.cal button.xmas i{position:absolute;top:2px;right:3px;font-size:11px;font-style:normal;line-height:1}
+.xn{display:flex;gap:12px;align-items:center;margin-top:12px;padding:12px 14px;border-radius:10px;background:linear-gradient(120deg,#0f2a1e,#1d4a33);color:#fff;font-size:14px;line-height:1.4}
+.xn span{font-size:26px}.xn b{font:600 17px "EB Garamond",serif;color:var(--saf)}

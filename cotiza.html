@@ -16,7 +16,7 @@
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css?v=4">
+<link rel="stylesheet" href="css/site.css?v=5">
 <script src="js/html2canvas.min.js"></script>
 <script src="js/analytics.js?v=2" defer></script>
 </head>
@@ -34,6 +34,7 @@
       <div id="calWrap">
         <div class="calhead"><button class="navb" id="prev" aria-label="Mes anterior">‹</button><strong id="mes"></strong><button class="navb" id="next" aria-label="Mes siguiente">›</button></div>
         <div class="cal" id="cal"></div>
+        <div id="xnote"></div>
       </div>
       <label class="nofecha"><input type="checkbox" id="sinF"> Aún no tengo fecha, solo quiero conocer el precio</label>
       <div id="dateNote"></div>
@@ -86,17 +87,20 @@ function day(f){const es=evs.filter(e=>e.f===f);const all=es.some(e=>slotOf(e.h)
 const soon=()=>st.fecha&&new Date(st.fecha+'T00:00')<minDate;
 function okSlot(){const n=N();if(fuera()&&n<BIG)return false;if(st.sinF)return true;if(!st.fecha||!st.turno||!st.hora||soon())return false;const s=day(st.fecha);return n>=BIG||st.turno==='otro'||fuera()?!s.any:!s[st.turno]}
 /* ---------- calendario ---------- */
+const FEST={'12-24':'Nochebuena','12-25':'Navidad'};
 function renderCal(){
   const m=new Date(today.getFullYear(),today.getMonth()+mOff,1);$('#mes').textContent=m.toLocaleDateString('es-MX',{month:'long',year:'numeric'}).replace(/^./,x=>x.toUpperCase());
   $('#prev').disabled=mOff<=0;$('#next').disabled=mOff>=11;
   let h=['L','M','M','J','V','S','D'].map(x=>`<div class="h">${x}</div>`).join('');
   for(let i=0;i<(m.getDay()+6)%7;i++)h+='<div></div>';
   const days=new Date(m.getFullYear(),m.getMonth()+1,0).getDate();
-  for(let d=1;d<=days;d++){const dt=new Date(m.getFullYear(),m.getMonth(),d),f=iso(dt),s=day(f);
+  for(let d=1;d<=days;d++){const dt=new Date(m.getFullYear(),m.getMonth(),d),f=iso(dt),s=day(f),fe=FEST[f.slice(5)];
+    if(fe&&dt>=today){h+=`<button data-f="${f}" class="xmas" aria-label="${d}, ${fe}: no disponible" title="${fe}" disabled>${d}<i aria-hidden="true">🎄</i></button>`;continue}
     const c=dt<today?'past':dt<minDate?'soon':(s.comida&&s.cena)?'full':(s.comida||s.cena)?'par':'';
     const lab={past:'pasado',full:'ocupado',soon:'consultar',par:'un horario libre','':'disponible'}[c];
     h+=`<button data-f="${f}" class="${c}${st.fecha===f?' on':''}" aria-label="${d}, ${lab}"${c==='past'||c==='full'?' disabled':''}>${d}</button>`}
   $('#cal').innerHTML=h;$('#calWrap').classList.toggle('off',st.sinF);
+  $('#xnote').innerHTML=m.getMonth()===11?'<div class="xn"><span aria-hidden="true">🎄</span><div><b>Celebra diciembre con una noche ibérica</b><br>El 24 y 25 de diciembre descansamos para pasarlos en familia.</div></div>':'';
 }
 function renderTurnos(){
   const s=st.fecha?day(st.fecha):{comida:false,cena:false,any:false},n=N();
