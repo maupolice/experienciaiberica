@@ -194,7 +194,7 @@ select{width:100%;font:16px Inter;padding:11px 14px;border:1px solid var(--line)
 .cnt button{flex:none;width:48px;height:46px;border:0;background:var(--soft);font:600 22px Inter;color:var(--g);cursor:pointer}
 .gh{display:flex;align-items:center;gap:12px;margin:26px 0 2px}
 .gh h4{margin:0}.gh .gc{margin-left:auto;font-size:12px;color:var(--g);font-weight:600}
-.gh .brm{height:30px;width:auto;opacity:.9}
+.gh .brm{height:16px;width:auto;opacity:.95;margin-left:4px;padding-left:12px;border-left:1px solid var(--line);box-sizing:content-box}
 .gi{margin:2px 0 6px!important;font-size:14px}
 .dish{align-items:flex-start}.dish input{margin-top:3px}
 .dish .dn{display:block}.dish small{display:block;font:13.5px/1.4 Inter;color:var(--mute);margin-top:2px}
