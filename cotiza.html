@@ -39,6 +39,10 @@
             <div><label for="n">Número de invitados</label><input id="n" type="number" min="1" inputmode="numeric" value="12"></div>
             <div><label for="nom">Tu nombre</label><input id="nom" autocomplete="name"></div>
           </div>
+          <div class="city">
+            <div><label for="ciu">Ciudad del evento</label><select id="ciu"><option>Torreón</option><option>Gómez Palacio</option><option>Lerdo</option><option value="otra">Otra ciudad</option></select></div>
+            <div id="otraBox" hidden><label for="otra">¿Qué ciudad?</label><input id="otra" placeholder="Ej. Monterrey, Saltillo"></div>
+          </div>
           <div id="slotNote"></div>
         </div>
         <div class="box menu"><h3><b>3</b>Tu menú</h3>
@@ -95,9 +99,12 @@ function renderTurnos(){
   if(n>=BIG&&s.any&&st.fecha)msg=`Para grupos de ${BIG} personas o más reservamos el día completo, y esta fecha ya tiene un evento. Prueba otra fecha.`;
   else if(n>=BIG)msg=msg||`Para grupos de ${BIG} personas o más, reservamos el día completo para ti.`;
   if(n&&n<cfg.minimo)msg=`El mínimo es de ${cfg.minimo} personas. Para grupos más pequeños escríbenos y lo platicamos.`;
+  if(fuera())msg=(n<BIG?`Para eventos fuera de la Comarca Lagunera el mínimo es de ${BIG} invitados. `:'')+'Un evento fuera de la ciudad ocupa el día completo, y el traslado se cotiza aparte: te lo confirmamos por WhatsApp.'+(st.fecha&&s.any?' Esta fecha ya tiene un evento; prueba otra.':'');
   $('#slotNote').innerHTML=msg?`<div class="note">${msg}</div>`:'';
 }
-function okSlot(){const n=+$('#n').value||0;if(!st.fecha||!st.turno||!st.hora||new Date(st.fecha+'T00:00')<minDate)return false;const s=day(st.fecha);return n>=BIG||st.turno==='otro'?!s.any:!s[st.turno]}
+const fuera=()=>$('#ciu').value==='otra';
+const ciudad=()=>fuera()?($('#otra').value.trim()||'Otra ciudad'):$('#ciu').value;
+function okSlot(){const n=+$('#n').value||0;if(!st.fecha||!st.turno||!st.hora||new Date(st.fecha+'T00:00')<minDate)return false;if(fuera()&&n<BIG)return false;const s=day(st.fecha);return n>=BIG||st.turno==='otro'||fuera()?!s.any:!s[st.turno]}
 function renderMenu(){
   $('#menu').innerHTML=[['entrada','Entradas'],['fuerte','Platos fuertes'],['corte','Cortes para compartir'],['postre','Postres']].map(([k,t])=>{const its=cat.filter(c=>c.c===k);if(!its.length)return'';
     return`<h4>${t}</h4>${its.map(c=>`<label class="dish"><input type="checkbox" data-id="${esc(c.id)}"${st.sel[c.id]?' checked':''}><span>${esc(clean(c.n))}${k==='corte'?`<small>Una pieza alcanza para ${String(c.po).replace('.',',')} ${c.po===1?'persona':'personas'}</small>`:''}</span></label>`).join('')}`}).join('')||'<p class="hint">El menú no está disponible en este momento. Escríbenos por WhatsApp.</p>';
@@ -111,17 +118,17 @@ function renderSum(){
   const n=+$('#n').value||0,r=calc(n),has=k=>r.lines.some(l=>l.c===k),ok=okSlot()&&n>=cfg.minimo&&has('fuerte');
   const by=k=>r.lines.filter(l=>l.c===k).map(l=>clean(l.n)+(k==='corte'?` (${l.q} pza${l.q>1?'s':''})`:'')).join(', ');
   const nom=$('#nom').value.trim(),tt=st.turno==='otro'?'Otro horario':st.turno?T[st.turno].n:'';
-  let txt=`Hola, me interesa una *Experiencia Ibérica en casa*${nom?'. Soy '+nom:''}.\n\nFecha: ${fecha(st.fecha)}\nHorario: ${tt}, ${st.hora||''}\nPersonas: ${n}\n`;
+  let txt=`Hola, me interesa una *Experiencia Ibérica en casa*${nom?'. Soy '+nom:''}.\n\nFecha: ${fecha(st.fecha)}\nHorario: ${tt}, ${st.hora||''}\nPersonas: ${n}\nCiudad: ${ciudad()}${fuera()?' (traslado por cotizar)':''}\n`;
   for(const[k,t]of[['entrada','Entradas'],['fuerte','Plato fuerte'],['corte','Cortes'],['postre','Postre']])if(has(k))txt+=`${t}: ${by(k)}\n`;
   txt+=`\nTotal estimado: ${money(r.total)} (${money(r.pp)} por persona)\n¿Me confirmas disponibilidad?`;
-  txt+=`\n\nCódigo: ${['EI1',st.fecha||'',st.hora||'',n,r.lines.map(l=>l.id).join('.'),nom.replace(/[|\n]/g,' ')].join('|')}`;
-  const miss=!st.fecha?'Elige una fecha':!st.turno||!st.hora?'Elige el horario':!okSlot()?'Ese horario no está disponible':n<cfg.minimo?`Mínimo ${cfg.minimo} personas`:!has('fuerte')?'Elige tu plato fuerte':'';
+  txt+=`\n\nCódigo: ${['EI1',st.fecha||'',st.hora||'',n,r.lines.map(l=>l.id).join('.'),nom.replace(/[|\n]/g,' '),ciudad().replace(/[|\n]/g,' ')].join('|')}`;
+  const miss=!st.fecha?'Elige una fecha':!st.turno||!st.hora?'Elige el horario':fuera()&&n<BIG?`Mínimo ${BIG} invitados fuera de la ciudad`:!okSlot()?'Ese horario no está disponible':n<cfg.minimo?`Mínimo ${cfg.minimo} personas`:!has('fuerte')?'Elige tu plato fuerte':'';
   const menu=[['entrada','Entradas'],['fuerte','Plato fuerte'],['corte','Cortes'],['postre','Postre']].filter(([k])=>has(k)).map(([k,t])=>`<h5>${t}</h5>${r.lines.filter(l=>l.c===k).map(l=>`<div class="pl">${esc(clean(l.n))}${k==='corte'?` · ${l.q} pza${l.q>1?'s':''}`:''}</div>`).join('')}`).join('');
   $('#sum').innerHTML=`<div class="carta"><img class="lg" src="img/logo-verde.png" alt="Experiencia Ibérica">
   <div class="t1">Una noche ibérica</div><div class="t2">${nom?'en casa de '+esc(nom):'en tu casa'}</div>
-  <div class="dt">${st.fecha?esc(fecha(st.fecha)):'Elige tu fecha'}${st.hora?' · '+st.hora+' h':''}${n?' · '+n+' invitados':''}</div>
+  <div class="dt">${st.fecha?esc(fecha(st.fecha)):'Elige tu fecha'}${st.hora?' · '+st.hora+' h':''}${n?' · '+n+' invitados':''}${fuera()?' · '+esc(ciudad()):''}</div>
   <div class="orn">✦</div>${menu||'<div class="vac">Tu menú aparecerá aquí</div>'}<div class="orn">✦</div>
-  <div class="lbl">Total estimado</div><div class="total">${money(r.total)}</div><div class="lbl">${r.total?money(r.pp)+' por persona':'Elige tu menú para ver el total'}</div>
+  <div class="lbl">Total estimado${fuera()?' (más traslado)':''}</div><div class="total">${money(r.total)}</div><div class="lbl">${r.total?money(r.pp)+' por persona':'Elige tu menú para ver el total'}</div>
   <ul>${r.desc?`<li>Cortesía por grupo<b>−${money(r.desc)}</b></li>`:''}<li>Anticipo para reservar (${cfg.anticipo}%)<b>${money(r.ant)}</b></li></ul>
   <a class="wa${ok?'':' off'}" href="https://wa.me/${WA}?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener">${ok?'Enviar por WhatsApp':esc(miss)}</a>
   <button class="dl" id="dlCarta"${r.lines.length?'':' disabled'}>Descargar mi carta para compartir</button>
@@ -151,7 +158,8 @@ $('#prev').onclick=()=>{if(mOff>0){mOff--;renderCal()}};$('#next').onclick=()=>{
 $('#turnos').onclick=e=>{const t=e.target.dataset?.t;if(!t||e.target.disabled)return;st.turno=t;st.hora=null;renderTurnos();renderSum()};
 $('#horas').onclick=e=>{const h=e.target.dataset?.h;if(!h)return;st.hora=h;renderTurnos();renderSum()};
 $('#horas').addEventListener('input',e=>{if(e.target.id==='ho'){st.hora=e.target.value;renderSum()}});
-$('#n').addEventListener('input',()=>{renderTurnos();renderSum()});$('#nom').addEventListener('input',renderSum);
+$('#n').addEventListener('input',()=>{renderTurnos();renderSum()});
+$('#ciu').addEventListener('change',()=>{$('#otraBox').hidden=!fuera();renderTurnos();renderSum()});$('#otra').addEventListener('input',renderSum);$('#nom').addEventListener('input',renderSum);
 $('#menu').addEventListener('change',e=>{const id=e.target.dataset.id;if(id){e.target.checked?st.sel[id]=1:delete st.sel[id];renderSum()}});
 function init(D){cfg={...cfg,...(D.cfg||{})};cat=D.cat||[];evs=D.ev||[];WA=D.wa||WA;MIN_DAYS=D.minDias??3;BIG=D.grande??25;
   minDate=new Date(today);minDate.setDate(minDate.getDate()+MIN_DAYS);

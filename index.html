@@ -16,14 +16,14 @@
 <body>
 <nav class="nav" id="nav">
   <a href="#inicio" aria-label="Inicio"><img src="img/logo-blanco.png" alt="Experiencia Ibérica"></a>
-  <ul><li><a href="#experiencia">La experiencia</a></li><li><a href="#galeria">Galería</a></li><li><a href="#incluye">Qué incluye</a></li><li><a href="#faq">Preguntas</a></li><li><a href="#instagram">Instagram</a></li></ul>
+  <ul><li><a href="#experiencia">La experiencia</a></li><li><a href="#galeria">Galería</a></li><li><a href="#espana">España</a></li><li><a href="#incluye">Qué incluye</a></li><li><a href="#faq">Preguntas</a></li><li><a href="#instagram">Instagram</a></li></ul>
   <a class="btn saf" href="cotiza.html">Cotiza tu evento</a>
 </nav>
 
 <header class="hero" id="inicio">
   <img class="hp" src="img/hero.jpg" alt="Mauricio Serna emplatando tostas en cocina" fetchpriority="high">
   <div class="wrap">
-    <div class="eyebrow">Torreón, Coahuila</div>
+    <div class="eyebrow">Torreón · Eventos en todo México</div>
     <h1>Cocina española en vivo, en tu casa</h1>
     <p>Paellas, arroces, tapas y cortes preparados frente a tus invitados. Tú disfrutas; nosotros cocinamos.</p>
     <div class="cta"><a class="btn saf" href="cotiza.html">Ver disponibilidad y precio</a><a class="btn line" href="https://www.instagram.com/experienciaiberica" target="_blank" rel="noopener">Instagram</a></div>
@@ -71,6 +71,19 @@
   </div>
 </section>
 
+<section id="espana">
+  <div class="wrap">
+    <div class="eyebrow">Un viaje por España</div>
+    <h2 class="sh">Cada platillo viene de algún lugar</h2>
+    <p class="lead">Toca una región del mapa para conocer los platillos de nuestra carta que nacieron ahí.</p>
+    <div class="esp">
+      <div class="map" id="map" role="group" aria-label="Mapa de España"></div>
+      <div class="rg" id="rg" aria-live="polite"></div>
+    </div>
+    <div class="chips rgchips" id="rgchips"></div>
+  </div>
+</section>
+
 <section id="invitados">
   <div class="wrap">
     <div class="eyebrow">Invitados</div>
@@ -80,6 +93,21 @@
       <figure><img src="img/famoso-2.jpg" alt="Mauricio Serna con Dustin Johnson" loading="lazy" style="object-position:center 30%"><figcaption>Dustin Johnson</figcaption></figure>
       <figure><img src="img/famoso-3.jpg" alt="Mauricio Serna con Carlos Acevedo" loading="lazy" style="object-position:center 35%"><figcaption>Carlos Acevedo</figcaption></figure>
     </div>
+  </div>
+</section>
+
+<section id="noche" class="dark">
+  <div class="wrap">
+    <div class="eyebrow">Así es tu noche</div>
+    <h2 class="sh">Del primer fuego al último bocado</h2>
+    <ol class="tl">
+      <li><b>Días antes</b><h3>Afinamos los detalles</h3><p>Confirmamos menú, invitados y alergias. En nuestra cocina preparamos todo lo que lleva tiempo: fondos, croquetas, tortillas y salsas.</p></li>
+      <li><b>Antes de que lleguen</b><h3>Montamos la cocina en tu casa</h3><p>Llegamos con paelleras, quemadores, ingredientes y utensilios, y armamos la cocina en tu jardín o terraza.</p></li>
+      <li><b>Llegan tus invitados</b><h3>Salen las entradas</h3><p>Tapas recién hechas mientras tus invitados se saludan y brindan.</p></li>
+      <li><b>El momento estrella</b><h3>El arroz, frente a todos</h3><p>El arroz o los cortes se terminan en vivo. El aroma, el fuego y la paellera al centro: aquí empieza la experiencia.</p></li>
+      <li><b>A la mesa</b><h3>Servimos el plato fuerte</h3><p>Cada porción sale en su punto, directo de la paellera o la parrilla.</p></li>
+      <li><b>Sobremesa</b><h3>Postre y despedida</h3><p>Llega el postre y recogemos nuestra cocina. Tú solo te quedas con el recuerdo.</p></li>
+    </ol>
   </div>
 </section>
 
@@ -107,6 +135,7 @@
       <details><summary>¿Con cuánta anticipación debo reservar?</summary><p>Puedes reservar desde la página con al menos 3 días de anticipación. Si tu evento es antes, escríbenos por WhatsApp y vemos si es posible.</p></details>
       <details><summary>¿Puedo cambiar el número de invitados?</summary><p>Sí, hasta 5 días antes del evento, cuando se confirman el número final y el menú. Se cobra el número confirmado aunque asistan menos personas. Los aumentos de último momento quedan sujetos a disponibilidad de insumos.</p></details>
       <details><summary>¿Qué pasa si necesito cancelar?</summary><p>Con 7 días o más de anticipación, tu anticipo se puede aplicar a una nueva fecha dentro de los siguientes 3 meses. Con menos de 7 días el anticipo no es reembolsable, porque cubre la compra de insumos.</p></details>
+      <details><summary>¿Hacen eventos fuera de Torreón?</summary><p>Sí, en todo México, para eventos de 25 invitados o más. El traslado se cotiza aparte según la ciudad; arma tu cotización y te lo confirmamos por WhatsApp.</p></details>
       <details><summary>¿Atienden alergias o restricciones?</summary><p>Sí. Avísanos al confirmar el menú y adaptamos lo necesario.</p></details>
       <details><summary>¿Cuánto dura el servicio?</summary><p>Hasta 4 horas desde nuestra llegada. El tiempo adicional tiene un costo extra.</p></details>
       <details><summary>¿Ofrecen meseros o bebidas?</summary><p>Las bebidas no están incluidas. Los meseros los podemos coordinar con costo adicional.</p></details>
@@ -134,6 +163,27 @@
 
 <script>
 {
+const R={
+'01':{t:'Andalucía, mi segunda casa',p:'Viví en Sevilla y ahí aprendí el tapeo de barra. De esta tierra vienen varios de nuestros clásicos.',d:[['Solomillo al whiskey','Tapa sevillana por excelencia: lomo de cerdo en salsa de whisky, ajo y limón.'],['Rabo de toro','Guiso cordobés de cocción lenta, con vino tinto y verduras.'],['Croquetas de cola de toro','El rabo de toro, convertido en croqueta cremosa.'],['Gambas al ajillo','Camarón en aceite de oliva con ajo y guindilla, para mojar pan.'],['Tosta de atún','Un guiño al atún rojo de almadraba de Cádiz.'],['Ensaladilla rusa','En cualquier barra de Sevilla es tapa obligada.']]},
+'10':{t:'Comunidad Valenciana, la cuna del arroz',p:'La paella nació entre los arrozales de Valencia. Por eso todos nuestros arroces llevan arroz español.',d:[['Paella valenciana','Pollo, costilla, garrofón, alcachofa y azafrán: la receta de origen.'],['Arroz de mariscos','El arroz de la costa mediterránea, con fumet casero.'],['Arroz de carne','Nuestra versión con costilla, porterhouse y espárragos.'],['Fideuá de pollo','Nació en Gandía: la técnica de la paella, con fideo en lugar de arroz.']]},
+'12':{t:'Galicia',p:'En las ferias gallegas el pulpo se cuece en ollas de cobre y se sirve sobre madera.',d:[['Pulpo a la gallega','Pulpo con papa, pimentón de la Vera, aceite de oliva y sal gruesa.']]},
+'16':{t:'País Vasco',p:'Tierra de asadores y de la tarta de queso más famosa del mundo.',d:[['Tarta vasca','La tarta de queso quemada nació en San Sebastián.'],['Cortes a la brasa','Ribeye, porterhouse y tomahawk, al estilo de los asadores vascos.']]},
+'15':{t:'Navarra',p:'Hogar de la chistorra, el embutido delgado y ahumado del norte.',d:[['Tortilla de patata con chistorra','La tortilla de siempre, con el toque de la chistorra navarra.']]},
+'09':{t:'Cataluña',p:'El desayuno y la merienda catalana empiezan con pan, tomate y aceite.',d:[['Pan con tomate','Pan tostado, tomate y un buen aceite de oliva.']]},
+'13':{t:'Madrid',p:'Dos clásicos que no faltan en ningún bar madrileño.',d:[['Croquetas de jamón','Bechamel cremosa con jamón serrano y un empanizado crujiente.'],['Patatas bravas','Papas crujientes con salsa brava y alioli.']]},
+'08':{t:'Castilla-La Mancha',p:'Tierra del queso manchego.',d:[['Tabla de quesos y carnes frías','Quesos y embutidos para abrir la noche.']]}};
+fetch('data/espana.json').then(r=>r.json()).then(G=>{
+  const map=document.getElementById('map'),rg=document.getElementById('rg'),ch=document.getElementById('rgchips');
+  map.innerHTML=`<svg viewBox="0 0 600 500" aria-hidden="false">${G.map(g=>`<path d="${g.d}" data-id="${g.id}" class="${R[g.id]?'has':''}"${R[g.id]?` tabindex="0" role="button" aria-label="${R[g.id].t}"`:''}><title>${g.name}</title></path>`).join('')}<g class="sev"><circle cx="0" cy="0" r="5"/><text x="9" y="4">Sevilla</text></g></svg>`;
+  const sv=G.find(g=>g.id==='01');const sev=map.querySelector('.sev');sev.setAttribute('transform',`translate(${sv.c[0]-28},${sv.c[1]-4})`);
+  ch.innerHTML=Object.entries(R).map(([id,r])=>`<button class="chip" data-id="${id}">${r.t.split(',')[0]}</button>`).join('');
+  const pick=id=>{const r=R[id];if(!r)return;map.querySelectorAll('path').forEach(p=>p.classList.toggle('on',p.dataset.id===id));ch.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c.dataset.id===id));
+    rg.innerHTML=`<h3>${r.t}</h3><p class="rp">${r.p}</p>${r.d.map(([n,x])=>`<div class="dsh"><b>${n}</b><span>${x}</span></div>`).join('')}<a class="btn g" href="cotiza.html">Inclúyelo en tu menú</a>`};
+  map.addEventListener('click',e=>pick(e.target.dataset?.id));map.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(e.target.dataset?.id)}});
+  ch.addEventListener('click',e=>pick(e.target.dataset?.id));pick('01');
+}).catch(()=>{document.getElementById('espana').style.display='none'});
+const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.35});
+document.querySelectorAll('.tl li').forEach(li=>io.observe(li));
 const nav=document.getElementById('nav');const onS=()=>nav.classList.toggle('solid',scrollY>60);addEventListener('scroll',onS,{passive:true});onS();
 // Reels o publicaciones de Instagram a mostrar (links completos)
 const IG=['DfUvoe-Rfx-','DeCpzYzx0Il','DeeweVTRRGu','DffZZyuRcej','DfZ17wVxcy-','DfnAKsWR4mW'].map(id=>`https://www.instagram.com/reel/${id}/`);
