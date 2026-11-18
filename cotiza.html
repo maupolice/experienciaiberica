@@ -16,7 +16,7 @@
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css?v=5">
+<link rel="stylesheet" href="css/site.css?v=6">
 <script src="js/html2canvas.min.js"></script>
 <script src="js/analytics.js?v=2" defer></script>
 </head>
@@ -100,7 +100,7 @@ function renderCal(){
     const lab={past:'pasado',full:'ocupado',soon:'consultar',par:'un horario libre','':'disponible'}[c];
     h+=`<button data-f="${f}" class="${c}${st.fecha===f?' on':''}" aria-label="${d}, ${lab}"${c==='past'||c==='full'?' disabled':''}>${d}</button>`}
   $('#cal').innerHTML=h;$('#calWrap').classList.toggle('off',st.sinF);
-  $('#xnote').innerHTML=m.getMonth()===11?'<div class="xn"><span aria-hidden="true">🎄</span><div><b>Celebra diciembre con una noche ibérica</b><br>El 24 y 25 de diciembre descansamos para pasarlos en familia.</div></div>':'';
+  $('#xnote').innerHTML=m.getMonth()===11?'<div class="xn"><span aria-hidden="true">🎄</span><div><b>Celebra diciembre con una noche ibérica</b><br>El 24 y 25 de diciembre no hay eventos, pero tendremos <b class="xp">menú para llevar</b>. Próximamente.</div></div>':'';
 }
 function renderTurnos(){
   const s=st.fecha?day(st.fecha):{comida:false,cena:false,any:false},n=N();
