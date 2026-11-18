@@ -113,6 +113,10 @@ input:focus,button:focus-visible,a:focus-visible{outline:2px solid var(--saf);ou
 .small{font-size:13px;color:rgb(255 255 255/.7);margin-top:12px}
 .tg{display:none;background:none;border:0;color:var(--saf);font:600 14px Inter;cursor:pointer;padding:6px 0}
 @media(max-width:900px){.sum{position:fixed;left:0;right:0;bottom:0;top:auto;border-radius:16px 16px 0 0;padding:14px 18px;z-index:15;box-shadow:0 -8px 24px rgb(0 0 0/.2);transform:translateY(110%);transition:transform .3s}.sum.show{transform:none}.sum ul,.sum .det{display:none}.sum.open ul,.sum.open .det{display:block}.total{font-size:38px}.tg{display:inline}}
+.fam{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:40px}
+.fam figure{margin:0}.fam img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:6px}
+.fam figcaption{font:600 22px "EB Garamond",serif;margin-top:12px}
+@media(max-width:760px){.fam{grid-template-columns:minmax(0,1fr)}}
 footer{background:var(--g);color:rgb(255 255 255/.8);padding:56px 0 40px}
 footer .wrap{display:flex;justify-content:space-between;gap:28px;flex-wrap:wrap;align-items:center}
 footer img{height:56px;width:auto}
@@ -174,6 +178,18 @@ footer p{margin:4px 0}
       <p>Viví en Sevilla y recorrí gran parte de España. Allá trabajé en dos restaurantes de cocina española y cociné en eventos privados.</p>
       <p>Hoy traigo esa cocina a Torreón: preparo con anticipación lo que lleva tiempo, y el arroz, los cortes y las tapas los termino en vivo en tu casa, para que lleguen a la mesa en su punto.</p>
       <a class="btn saf" href="#cotiza" style="margin-top:12px">Cotiza tu evento</a>
+    </div>
+  </div>
+</section>
+
+<section id="invitados">
+  <div class="wrap">
+    <div class="eyebrow">Invitados</div>
+    <h2 class="sh">Han disfrutado nuestra cocina</h2>
+    <div class="fam">
+      <figure><img src="img/famoso-1.jpg" alt="Mauricio Serna con Carlos Acevedo" loading="lazy" style="object-position:center 30%"><figcaption>Carlos Acevedo</figcaption></figure>
+      <figure><img src="img/famoso-2.jpg" alt="Mauricio Serna con Dustin Johnson" loading="lazy" style="object-position:center 30%"><figcaption>Dustin Johnson</figcaption></figure>
+      <figure><img src="img/famoso-3.jpg" alt="Mauricio Serna con Andrés Guardado" loading="lazy" style="object-position:center 35%"><figcaption>Andrés Guardado</figcaption></figure>
     </div>
   </div>
 </section>
