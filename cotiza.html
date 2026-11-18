@@ -117,7 +117,7 @@ function renderMenu(){
   $('#menu').innerHTML=GR.map(([k,t])=>{const its=cat.filter(c=>c.c===k);if(!its.length)return'';
     const cnt=its.filter(c=>st.sel[c.id]).length;
     const head=`<div class="gh"><h4>${k==='fuerte'?'Platos fuertes':t==='Postre'?'Postres':t}</h4>${k==='postre'?'<img class="brm" src="img/brumea.png" alt="Postres de Bruméa" onerror="this.remove()">':''}<span class="gc">${cnt?cnt+' elegido'+(cnt>1?'s':''):''}</span></div>`;
-    const intro=k==='corte'?'<p class="hint gi">Como plato fuerte o al centro para compartir. Te sugerimos la cantidad.</p>':k==='postre'?'<p class="hint gi">Repostería artesanal hecha a mano.</p>':'';
+    const intro=k==='corte'?'<p class="hint gi">Como plato fuerte o al centro para compartir. Te sugerimos la cantidad.</p>':'';
     return head+intro+its.map(c=>{const on=!!st.sel[c.id];let x='';
       if(k==='corte'&&on){const po=c.po||1,full=Math.max(1,Math.ceil(n/po)),q=qtyOf(c,n),sug=sugCorte(c,n);
         x=`<div class="dx"><div class="stp"><button type="button" data-m="${esc(c.id)}" aria-label="Menos piezas">−</button><b>${q} pieza${q>1?'s':''}</b><button type="button" data-p="${esc(c.id)}" aria-label="Más piezas">+</button></div><small class="sg">${hasMain()?`Sugerido: ${sug} al centro para compartir. Porción completa para todos: ${full}.`:`Sugerido: ${sug} para que todos coman su porción completa.`}</small></div>`}
