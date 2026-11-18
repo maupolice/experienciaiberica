@@ -8,10 +8,12 @@
 <meta property="og:title" content="Experiencia Ibérica · Cocina española en tu casa">
 <meta property="og:description" content="Paellas, tapas y cortes cocinados en vivo en tu casa. Cotiza tu evento en Torreón.">
 <meta property="og:image" content="https://experienciaiberica.com/img/hero.jpg">
-<link rel="icon" href="img/logo-verde.png">
+<link rel="icon" href="img/icono.png" type="image/png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FoodEstablishment","name":"Experiencia Ibérica","description":"Chef privado de cocina española a domicilio: paellas, arroces, tapas y cortes cocinados en vivo en tu casa.","url":"https://experienciaiberica.com/","image":"https://experienciaiberica.com/img/hero.jpg","logo":"https://experienciaiberica.com/img/icono.png","telephone":"+52 871 555 4141","servesCuisine":["Española","Paella","Tapas"],"areaServed":[{"@type":"City","name":"Torreón"},{"@type":"City","name":"Gómez Palacio"},{"@type":"City","name":"Lerdo"},{"@type":"Country","name":"México"}],"address":{"@type":"PostalAddress","addressLocality":"Torreón","addressRegion":"Coahuila","addressCountry":"MX"},"founder":{"@type":"Person","name":"Mauricio Serna Fernández"},"sameAs":["https://www.instagram.com/experienciaiberica","https://www.tiktok.com/@mau.serna"]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css?v=3">
+<link rel="stylesheet" href="css/site.css?v=4">
 <script src="js/analytics.js?v=2" defer></script>
 </head>
 <body>
@@ -19,6 +21,7 @@
   <a href="#inicio" aria-label="Inicio"><img src="img/logo-blanco.png" alt="Experiencia Ibérica"></a>
   <ul><li><a href="#experiencia">La experiencia</a></li><li><a href="#espana">España</a></li><li><a href="#faq">Preguntas</a></li><li><a href="#instagram">Instagram</a></li></ul>
   <a class="btn saf" href="cotiza.html">Cotiza tu evento</a>
+  <button class="burg" id="burg" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
 </nav>
 
 <header class="hero" id="inicio">
@@ -27,13 +30,13 @@
     <div class="eyebrow">Torreón · Eventos en todo México</div>
     <h1>Cocina española en vivo, en tu casa</h1>
     <p>Paellas, arroces, tapas y cortes preparados frente a tus invitados. Tú disfrutas; nosotros cocinamos.</p>
-    <div class="cta"><a class="btn saf" href="cotiza.html">Ver disponibilidad y precio</a><a class="btn line" href="https://www.instagram.com/experienciaiberica" target="_blank" rel="noopener">Instagram</a><a class="btn line" href="https://www.tiktok.com/@mau.serna" target="_blank" rel="noopener">TikTok</a></div>
+    <div class="cta"><a class="btn saf" href="cotiza.html">Ver disponibilidad y precio</a></div>
   </div>
 </header>
 
 <section id="invitados" class="inv">
   <div class="wrap">
-    <div class="proof"><div><b>16 mil</b><span>seguidores en Instagram</span></div><div><b>Sevilla</b><span>formación en restaurantes de España</span></div><div><b>En vivo</b><span>cocinamos frente a tus invitados</span></div></div>
+    <div class="proof"><div><b>16 mil</b><span>seguidores en Instagram</span></div><div><b>España</b><span>experiencia en 2 restaurantes de cocina española</span></div><div><b>En vivo</b><span>cocinamos frente a tus invitados</span></div></div>
     <div class="eyebrow">Invitados</div>
     <h2 class="sh">Han disfrutado nuestra cocina</h2>
     <div class="fam">
@@ -91,11 +94,11 @@
     <div class="eyebrow">Un viaje por España</div>
     <h2 class="sh">Cada platillo viene de algún lugar</h2>
     <p class="lead">Toca una región del mapa para conocer los platillos de nuestra carta que nacieron ahí.</p>
+    <div class="chips rgchips" id="rgchips"></div>
     <div class="esp">
       <div class="map" id="map" role="group" aria-label="Mapa de España"></div>
       <div class="rg" id="rg" aria-live="polite"></div>
     </div>
-    <div class="chips rgchips" id="rgchips"></div>
   </div>
 </section>
 
@@ -170,7 +173,8 @@ fetch('data/espana.json').then(r=>r.json()).then(G=>{
   map.addEventListener('click',e=>pick(e.target.dataset?.id));map.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(e.target.dataset?.id)}});
   ch.addEventListener('click',e=>pick(e.target.dataset?.id));pick('01');
 }).catch(()=>{document.getElementById('espana').style.display='none'});
-const nav=document.getElementById('nav');const onS=()=>nav.classList.toggle('solid',scrollY>60);addEventListener('scroll',onS,{passive:true});onS();
+const nav=document.getElementById('nav'),burg=document.getElementById('burg');burg.onclick=()=>{const o=nav.classList.toggle('mopen');burg.setAttribute('aria-expanded',o)};nav.querySelectorAll('ul a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('mopen')));
+const onS=()=>nav.classList.toggle('solid',scrollY>60);addEventListener('scroll',onS,{passive:true});onS();
 // Reels o publicaciones de Instagram a mostrar (links completos)
 const IG=['DfUvoe-Rfx-','DeCpzYzx0Il','DeeweVTRRGu','DffZZyuRcej','DfZ17wVxcy-','DfnAKsWR4mW'].map(id=>`https://www.instagram.com/reel/${id}/`);
 const box=document.getElementById('ig');

@@ -237,3 +237,14 @@ select{width:100%;font:16px Inter;padding:11px 14px;border:1px solid var(--line)
   .faq summary{font-size:19px}
 }
 .legal{max-width:760px}.legal h2{font-size:26px;margin:28px 0 8px}.legal p,.legal li{color:#3d3a35}
+.burg{display:none;width:44px;height:44px;border:0;background:transparent;cursor:pointer;padding:10px;flex:none}
+.burg span{display:block;height:2px;background:#fff;margin:5px 0;border-radius:2px}
+@media(max-width:760px){
+  .burg{display:block}
+  .nav{flex-wrap:wrap}
+  .nav.mopen{background:var(--g)}
+  .nav.mopen ul{display:flex;flex-direction:column;gap:0;width:100%;order:3;padding:6px 0 10px}
+  .nav.mopen ul a{display:block;padding:12px 4px;font-size:17px;border-top:1px solid rgb(255 255 255/.12)}
+  .rgchips{margin:0 0 18px}
+}
+.rgchips{margin:0 0 22px}
