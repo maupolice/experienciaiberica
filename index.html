@@ -21,6 +21,7 @@
 </nav>
 
 <header class="hero" id="inicio">
+  <video class="hv" id="hv" muted loop playsinline preload="none" aria-hidden="true"></video>
   <div class="wrap">
     <div class="eyebrow">Torreón, Coahuila</div>
     <h1>Cocina española en vivo, en tu casa</h1>
@@ -133,6 +134,8 @@
 
 <script>
 {
+const v=document.getElementById('hv'),mob=matchMedia('(max-width:700px)').matches;
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches){v.poster=mob?'img/hero-movil.jpg':'img/hero-video.jpg';v.src=mob?'video/hero-movil.mp4':'video/hero.mp4';v.play().catch(()=>{})}
 const nav=document.getElementById('nav');const onS=()=>nav.classList.toggle('solid',scrollY>60);addEventListener('scroll',onS,{passive:true});onS();
 // Reels o publicaciones de Instagram a mostrar (links completos)
 const IG=[];
