@@ -21,7 +21,7 @@
 </nav>
 
 <header class="hero" id="inicio">
-  <video class="hv" id="hv" muted loop playsinline preload="none" aria-hidden="true"></video>
+  <img class="hp" src="img/hero.jpg" alt="Mauricio Serna emplatando tostas en cocina" fetchpriority="high">
   <div class="wrap">
     <div class="eyebrow">Torreón, Coahuila</div>
     <h1>Cocina española en vivo, en tu casa</h1>
@@ -134,8 +134,6 @@
 
 <script>
 {
-const v=document.getElementById('hv'),mob=matchMedia('(max-width:700px)').matches;
-if(!matchMedia('(prefers-reduced-motion: reduce)').matches){v.poster=mob?'img/hero-movil.jpg':'img/hero-video.jpg';v.src=mob?'video/hero-movil.mp4':'video/hero.mp4';v.play().catch(()=>{})}
 const nav=document.getElementById('nav');const onS=()=>nav.classList.toggle('solid',scrollY>60);addEventListener('scroll',onS,{passive:true});onS();
 // Reels o publicaciones de Instagram a mostrar (links completos)
 const IG=['DfUvoe-Rfx-','DeCpzYzx0Il','DeeweVTRRGu','DffZZyuRcej','DfZ17wVxcy-','DfnAKsWR4mW'].map(id=>`https://www.instagram.com/reel/${id}/`);
