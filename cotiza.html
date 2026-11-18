@@ -16,7 +16,7 @@
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css?v=6">
+<link rel="stylesheet" href="css/site.css?v=7">
 <script src="js/html2canvas.min.js"></script>
 <script src="js/analytics.js?v=2" defer></script>
 </head>
@@ -30,7 +30,7 @@
 <section id="cotiza"><div class="wrap"><div class="cz">
   <div>
     <div class="box"><h3><b>1</b>Fecha</h3>
-      <p class="hint">Verde: disponible · Dorado: queda un horario</p>
+      <p class="hint">Elige un día. Si solo queda comida o solo cena, lo verás escrito en el día.</p>
       <div id="calWrap">
         <div class="calhead"><button class="navb" id="prev" aria-label="Mes anterior">‹</button><strong id="mes"></strong><button class="navb" id="next" aria-label="Mes siguiente">›</button></div>
         <div class="cal" id="cal"></div>
@@ -98,7 +98,8 @@ function renderCal(){
     if(fe&&dt>=today){h+=`<button data-f="${f}" class="xmas" aria-label="${d}, ${fe}: no disponible" title="${fe}" disabled>${d}<i aria-hidden="true">🎄</i></button>`;continue}
     const c=dt<today?'past':dt<minDate?'soon':(s.comida&&s.cena)?'full':(s.comida||s.cena)?'par':'';
     const lab={past:'pasado',full:'ocupado',soon:'consultar',par:'un horario libre','':'disponible'}[c];
-    h+=`<button data-f="${f}" class="${c}${st.fecha===f?' on':''}" aria-label="${d}, ${lab}"${c==='past'||c==='full'?' disabled':''}>${d}</button>`}
+    const tag=c==='par'?(s.cena?'solo<br>comida':'solo<br>cena'):c==='full'?'lleno':'';
+    h+=`<button data-f="${f}" class="${c}${st.fecha===f?' on':''}" aria-label="${d}, ${c==='par'?(s.cena?'solo comida disponible':'solo cena disponible'):lab}"${c==='past'||c==='full'?' disabled':''}>${d}${tag?`<small aria-hidden="true">${tag}</small>`:''}</button>`}
   $('#cal').innerHTML=h;$('#calWrap').classList.toggle('off',st.sinF);
   $('#xnote').innerHTML=m.getMonth()===11?'<div class="xn"><span aria-hidden="true">🎄</span><div><b>Celebra diciembre con una noche ibérica</b><br>El 24 y 25 de diciembre no hay eventos, pero tendremos <b class="xp">menú para llevar</b>. Próximamente.</div></div>':'';
 }
