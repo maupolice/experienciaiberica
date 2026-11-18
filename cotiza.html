@@ -79,7 +79,7 @@ const mins=h=>{const[a,b]=(h||'0:0').split(':').map(Number);return a*60+b};
 const slotOf=h=>{const m=mins(h);return m>=780&&m<=900?'comida':m>=1200&&m<=1320?'cena':'dia'};
 const clean=s=>s.replace(/\s*\((1 kg|350 g)\)/,'');
 const today=new Date();today.setHours(0,0,0,0);let minDate=new Date(today);minDate.setDate(minDate.getDate()+MIN_DAYS);
-let mOff=0,st={fecha:null,turno:null,hora:null,sel:{},qty:{},shown:false,sinF:false};
+let lastCode='',mOff=0,st={fecha:null,turno:null,hora:null,sel:{},qty:{},shown:false,sinF:false};
 const fecha=f=>f?new Date(f+'T12:00').toLocaleDateString('es-MX',{weekday:'long',day:'numeric',month:'long'}):'';
 const N=()=>Math.max(0,+$('#n').value||0);
 const fuera=()=>$('#ciu').value==='otra',ciudad=()=>fuera()?($('#otra').value.trim()||'Otra ciudad'):$('#ciu').value;
@@ -147,7 +147,7 @@ function renderSum(){
   let txt=`Hola, me interesa una *Experiencia Ibérica en casa*${nom?'. Soy '+nom:''}.\n\nFecha: ${st.sinF?'por definir':fecha(st.fecha)}\n${st.sinF?'':`Horario: ${tt}, ${st.hora||''}\n`}Personas: ${n}\nCiudad: ${ciudad()}${fuera()?' (traslado por cotizar)':''}\n`;
   for(const[k,t]of GR)if(has(k))txt+=`${t==='Postre'?'Postre':t}: ${by(k)}\n`;
   txt+=`\nTotal estimado: ${money(r.total)}\n${st.sinF?'¿Qué fechas tienes disponibles?':'¿Me confirmas disponibilidad?'}`;
-  txt+=`\n\nCódigo: ${['EI1',st.sinF?'':st.fecha||'',st.sinF?'':st.hora||'',n,r.lines.map(l=>l.c==='corte'?l.id+'*'+l.q:l.id).join('.'),nom.replace(/[|\n]/g,' '),ciudad().replace(/[|\n]/g,' ')].join('|')}`;
+  const code=['EI1',st.sinF?'':st.fecha||'',st.sinF?'':st.hora||'',n,r.lines.map(l=>l.c==='corte'?l.id+'*'+l.q:l.id).join('.'),nom.replace(/[|\n]/g,' '),ciudad().replace(/[|\n]/g,' ')].join('|');lastCode=code;txt+=`\n\nCódigo: ${code}`;
   const miss=!n?'Indica el número de invitados':!st.sinF&&!st.fecha?'Elige una fecha':!st.sinF&&(!st.turno||!st.hora)?'Elige el horario':fuera()&&n<BIG?`Mínimo ${BIG} invitados fuera de la ciudad`:!okSlot()?'Ese horario no está disponible':n<cfg.minimo?`El mínimo es de ${cfg.minimo} invitados`:!has('fuerte')&&!has('corte')?'Elige un plato fuerte o un corte':'';
   const menu=GR.filter(([k])=>has(k)).map(([k,t])=>`<h5>${t}</h5>${r.lines.filter(l=>l.c===k).map(l=>`<div class="pl">${esc(clean(l.n))}${k==='corte'?` · ${l.q} pza${l.q>1?'s':''}`:''}</div>`).join('')}`).join('');
   const dt=st.sinF?'Fecha por definir':st.fecha?esc(fecha(st.fecha))+(st.hora?' · '+st.hora+' h':''):'Elige tu fecha';
@@ -158,7 +158,7 @@ function renderSum(){
   ${st.shown&&ok?`<div class="lbl">Total de tu experiencia${fuera()?' (más traslado)':''}</div><div class="total">${money(r.total)}</div><div class="lbl">Incluye chef, equipo de cocina e ingredientes · ${n} invitados</div>
   <ul>${r.desc?`<li>Cortesía por grupo<b>−${money(r.desc)}</b></li>`:''}<li>Anticipo para reservar (${cfg.anticipo}%)<b>${money(r.ant)}</b></li></ul>
   <a class="wa" href="https://wa.me/${WA}?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener">Enviar por WhatsApp</a>`:`<button class="wa${ok?'':' off'}" id="verQ"${ok?'':' disabled'}>${ok?'Ver mi cotización':esc(miss)}</button>`}
-  <button class="dl" id="dlCarta"${r.lines.length?'':' disabled'}>Descargar mi carta para compartir</button>
+  ${st.shown&&ok?`<button class="dl" id="dlPrecio">Descargar mi cotización (con precio)</button>`:''}<button class="dl" id="dlCarta"${r.lines.length?'':' disabled'}>Descargar carta para mis invitados (sin precio)</button>
   <p class="small">Precio estimado, sujeto a confirmación. No incluye loza, montaje, bebidas ni meseros.</p></div>`;
   const cnt=k=>r.lines.filter(l=>l.c===k).length,parts=[];
   if(cnt('entrada'))parts.push(cnt('entrada')+' entrada'+(cnt('entrada')>1?'s':''));if(cnt('fuerte'))parts.push(cnt('fuerte')+' fuerte'+(cnt('fuerte')>1?'s':''));if(cnt('corte'))parts.push(cnt('corte')+' corte'+(cnt('corte')>1?'s':''));if(cnt('postre'))parts.push('postre');
@@ -166,16 +166,16 @@ function renderSum(){
   $('#barT').textContent=st.shown&&ok?money(r.total):parts.join(' · ')||'Elige tus platillos';
   const bb=$('#barB');bb.textContent=st.shown&&ok?'Ver y enviar':ok?'Ver cotización':'Ver mi carta';bb.classList.toggle('hot',ok);
 }
-async function cartaImg(btn){
+async function cartaImg(btn,precio){
   if(!window.html2canvas){alert('No se pudo preparar la imagen. Intenta de nuevo.');return}
   const old=btn.textContent;btn.disabled=true;btn.textContent='Preparando tu carta…';
   try{
     const clone=document.querySelector('.carta').cloneNode(true);
-    clone.querySelectorAll('.wa,.dl,.small,ul,.total,.lbl,.cx').forEach(e=>e.remove());clone.style.outline='none';clone.style.boxShadow='inset 0 0 0 9px #fffdf9,inset 0 0 0 10px #d9cfbf';
-    const pr=document.createElement('div');pr.style.cssText='font:13px Inter;color:#6a665e;margin-top:6px';pr.textContent='experienciaiberica.com · WhatsApp 871 555 4141';clone.appendChild(pr);
+    clone.querySelectorAll(precio?'.wa,.dl,.cx':'.wa,.dl,.small,ul,.total,.lbl,.cx').forEach(e=>e.remove());clone.querySelectorAll('.total').forEach(e=>{e.style.lineHeight='1.15';e.style.margin='0';e.style.padding='0 0 18px';e.style.display='block'});clone.style.outline='none';clone.style.boxShadow='inset 0 0 0 9px #fffdf9,inset 0 0 0 10px #d9cfbf';
+    const pr=document.createElement('div');pr.style.cssText='font:13px Inter;color:#6a665e;margin-top:6px';pr.textContent='experienciaiberica.com · WhatsApp 871 555 4141';clone.appendChild(pr);if(lastCode){const cd=document.createElement('div');cd.style.cssText='font:10px ui-monospace,Menlo,monospace;color:#9a9488;margin-top:8px;word-break:break-all;line-height:1.4';cd.textContent='Código: '+lastCode;clone.appendChild(cd)}
     const w=document.createElement('div');w.style.cssText='position:fixed;left:-10000px;top:0;width:420px;padding:28px;background:#f5f2ec';w.appendChild(clone);document.body.appendChild(w);
     await document.fonts.ready;const cv=await html2canvas(w,{scale:3,backgroundColor:'#f5f2ec',useCORS:true});w.remove();
-    const blob=await new Promise(ok=>cv.toBlob(ok,'image/png'));const name='Mi noche ibérica.png',file=new File([blob],name,{type:'image/png'});
+    const blob=await new Promise(ok=>cv.toBlob(ok,'image/png'));const name=precio?'Mi cotización - noche ibérica.png':'Mi noche ibérica.png',file=new File([blob],name,{type:'image/png'});
     if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:'Mi noche ibérica'});return}catch(e){if(e.name==='AbortError')return}}
     const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);
   }catch(e){alert('No se pudo crear la imagen de tu carta.')}finally{btn.disabled=false;btn.textContent=old}
@@ -185,7 +185,7 @@ const mob=()=>matchMedia('(max-width:900px)').matches;
 const openSheet=()=>{if(mob()){$('#sum').classList.add('open');document.body.classList.add('lock')}};
 const closeSheet=()=>{$('#sum').classList.remove('open');document.body.classList.remove('lock')};
 const reveal=()=>{st.shown=true;renderSum();if(mob())openSheet();else document.querySelector('.carta .total')?.scrollIntoView({block:'center',behavior:'smooth'})};
-$('#sum').addEventListener('click',e=>{const id=e.target.id;if(id==='dlCarta')cartaImg(e.target);if(id==='verQ')reveal();if(id==='cx'||e.target===$('#sum'))closeSheet()});
+$('#sum').addEventListener('click',e=>{const id=e.target.id;if(id==='dlCarta')cartaImg(e.target,false);if(id==='dlPrecio')cartaImg(e.target,true);if(id==='verQ')reveal();if(id==='cx'||e.target===$('#sum'))closeSheet()});
 $('#barB').onclick=()=>{const n=N(),r=calc(n);if(!st.shown&&okSlot()&&n>=cfg.minimo&&r.lines.some(l=>l.c==='fuerte'||l.c==='corte'))reveal();else{renderSum();openSheet()}};
 addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
 /* ---------- eventos ---------- */
