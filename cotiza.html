@@ -20,7 +20,7 @@
   <ul><li><a href="./#experiencia">La experiencia</a></li><li><a href="./#galeria">Galería</a></li><li><a href="./#incluye">Qué incluye</a></li></ul>
   <a class="btn line" href="./">Inicio</a>
 </nav>
-<header class="top-cz"><div class="wrap"><div class="eyebrow">Cotiza</div><h1 class="sh">Arma tu noche ibérica</h1><p class="lead">Elige tu fecha y tu menú. A un lado se va armando la carta de tu evento con el total, y al terminar nos la mandas por WhatsApp con un solo toque.</p></div></header>
+<header class="top-cz"><div class="wrap"><div class="eyebrow">Cotiza</div><h1 class="sh">Arma tu noche ibérica</h1><p class="lead">Elige tu fecha y tu menú. A un lado se va armando la carta de tu evento; al terminar, toca "Ver mi cotización" para conocer el total y mándanosla por WhatsApp con un solo toque.</p></div></header>
 <section id="cotiza" style="padding-top:40px"><div class="wrap">
 <div class="cz">
       <div>
@@ -54,7 +54,7 @@
     </div>
   </div>
 </section>
-<div class="bar" id="bar"><div><div style="font-size:12px;opacity:.75">Total estimado</div><b id="barT">$0</b></div><a href="#sum">Ver mi carta ↓</a></div>
+<div class="bar" id="bar"><div><div style="font-size:12px;opacity:.75" id="barL">Arma tu menú</div><b id="barT">—</b></div><a href="#sum">Ver mi carta ↓</a></div>
 <footer>
   <div class="wrap">
     <img src="img/logo-blanco.png" alt="Experiencia Ibérica">
@@ -73,7 +73,7 @@ const mins=h=>{const[a,b]=(h||'0:0').split(':').map(Number);return a*60+b};
 const slotOf=h=>{const m=mins(h);return m>=780&&m<=900?'comida':m>=1200&&m<=1320?'cena':'dia'};
 const clean=s=>s.replace(/\s*\(Brum[ée]a[^)]*\)/,'').replace(/\s*\((1 kg|350 g)\)/,'');
 const today=new Date();today.setHours(0,0,0,0);let minDate;
-let mOff=0,st={fecha:null,turno:null,hora:null,sel:{}};
+let mOff=0,st={fecha:null,turno:null,hora:null,sel:{},qty:{},shown:false};
 const fecha=f=>f?new Date(f+'T12:00').toLocaleDateString('es-MX',{weekday:'long',day:'numeric',month:'long'}):'';
 function day(f){const es=evs.filter(e=>e.f===f);const all=es.some(e=>slotOf(e.h)==='dia'||e.p>=BIG);
   return{comida:all||es.some(e=>slotOf(e.h)==='comida'),cena:all||es.some(e=>slotOf(e.h)==='cena'),any:es.length>0}}
@@ -105,14 +105,23 @@ function renderTurnos(){
 const fuera=()=>$('#ciu').value==='otra';
 const ciudad=()=>fuera()?($('#otra').value.trim()||'Otra ciudad'):$('#ciu').value;
 function okSlot(){const n=+$('#n').value||0;if(!st.fecha||!st.turno||!st.hora||new Date(st.fecha+'T00:00')<minDate)return false;if(fuera()&&n<BIG)return false;const s=day(st.fecha);return n>=BIG||st.turno==='otro'||fuera()?!s.any:!s[st.turno]}
+const hasMain=()=>cat.some(x=>x.c==='fuerte'&&st.sel[x.id]);
+const sugCorte=(c,n)=>hasMain()?Math.max(1,Math.ceil(n/((c.po||1)*3))):Math.max(1,Math.ceil(n/(c.po||1)));
+const qtyOf=(c,n)=>c.u==='persona'?n:c.c==='corte'?(st.qty[c.id]??sugCorte(c,n)):Math.max(1,Math.ceil(n/(c.po||1)));
 function renderMenu(){
-  $('#menu').innerHTML=[['entrada','Entradas'],['fuerte','Platos fuertes'],['corte','Cortes para compartir'],['postre','Postres']].map(([k,t])=>{const its=cat.filter(c=>c.c===k);if(!its.length)return'';
-    return`<h4>${t}</h4>${its.map(c=>`<label class="dish"><input type="checkbox" data-id="${esc(c.id)}"${st.sel[c.id]?' checked':''}><span>${esc(clean(c.n))}${k==='corte'?`<small>Una pieza alcanza para ${String(c.po).replace('.',',')} ${c.po===1?'persona':'personas'}</small>`:''}</span></label>`).join('')}`}).join('')||'<p class="hint">El menú no está disponible en este momento. Escríbenos por WhatsApp.</p>';
+  const n=+$('#n').value||0;
+  $('#menu').innerHTML=[['entrada','Entradas'],['fuerte','Platos fuertes'],['corte','Cortes'],['postre','Postres']].map(([k,t])=>{const its=cat.filter(c=>c.c===k);if(!its.length)return'';
+    const intro=k==='corte'?`<p class="hint" style="margin:0 0 4px">Como plato fuerte o al centro para compartir. Te sugerimos la cantidad y tú decides.</p>`:'';
+    return`<h4>${t}</h4>${intro}${its.map(c=>{const on=st.sel[c.id];let extra='';
+      if(k==='corte'){const po=c.po||1,full=Math.max(1,Math.ceil(n/po)),cen=Math.max(1,Math.ceil(n/(po*3))),q=qtyOf(c,n),sug=sugCorte(c,n);
+        extra=`<small>1 pieza: porción completa para ${String(po).replace('.',',')} ${po===1?'persona':'personas'}, o al centro para ~${po*3}</small>`;
+        if(on)extra+=`<div class="stp"><button type="button" data-m="${esc(c.id)}" aria-label="Menos piezas">−</button><b>${q} pieza${q>1?'s':''}</b><button type="button" data-p="${esc(c.id)}" aria-label="Más piezas">+</button></div><small class="sg">${hasMain()?`Sugerido: ${sug} al centro para compartir con el arroz. Para porción completa de todos: ${full}.`:`Sugerido: ${sug} para que todos coman su porción completa.`}</small>`}
+      return`<div class="dishw"><label class="dish"><input type="checkbox" data-id="${esc(c.id)}"${on?' checked':''}><span>${esc(clean(c.n))}</span></label>${extra?`<div class="dx">${extra}</div>`:''}</div>`}).join('')}`}).join('')||'<p class="hint">El menú no está disponible en este momento. Escríbenos por WhatsApp.</p>';
 }
 function servicio(n){const ts=[...(cfg.tiers||[])].sort((a,b)=>a.max-b.max);let t=ts.find(t=>n<=t.max),ay,gas;
   if(t){ay=t.ayudantes;gas=t.gas}else{const l=ts[ts.length-1]||{max:0,ayudantes:1,gas:0};ay=l.ayudantes+Math.ceil((n-l.max)/15);gas=l.gas}return ay*cfg.ayudante+gas+cfg.servicio}
 function calc(n){let sub=0,post=0;const lines=[];
-  for(const c of cat.filter(c=>st.sel[c.id])){const q=c.u==='persona'?n:Math.max(1,Math.ceil(n/(c.po||1)));const v=c.pr*q;c.c==='postre'?post+=v:sub+=v;lines.push({...c,q})}
+  for(const c of cat.filter(c=>st.sel[c.id])){const q=qtyOf(c,n);const v=c.pr*q;c.c==='postre'?post+=v:sub+=v;lines.push({...c,q})}
   const desc=n>=cfg.descDesde?sub*cfg.descPct/100:0,sv=lines.length?servicio(n):0,total=sub-desc+sv+post;return{lines,desc,total,pp:n?total/n:0,ant:total*cfg.anticipo/100}}
 function renderSum(){
   const n=+$('#n').value||0,r=calc(n),has=k=>r.lines.some(l=>l.c===k),ok=okSlot()&&n>=cfg.minimo&&has('fuerte');
@@ -121,19 +130,19 @@ function renderSum(){
   let txt=`Hola, me interesa una *Experiencia Ibérica en casa*${nom?'. Soy '+nom:''}.\n\nFecha: ${fecha(st.fecha)}\nHorario: ${tt}, ${st.hora||''}\nPersonas: ${n}\nCiudad: ${ciudad()}${fuera()?' (traslado por cotizar)':''}\n`;
   for(const[k,t]of[['entrada','Entradas'],['fuerte','Plato fuerte'],['corte','Cortes'],['postre','Postre']])if(has(k))txt+=`${t}: ${by(k)}\n`;
   txt+=`\nTotal estimado: ${money(r.total)} (${money(r.pp)} por persona)\n¿Me confirmas disponibilidad?`;
-  txt+=`\n\nCódigo: ${['EI1',st.fecha||'',st.hora||'',n,r.lines.map(l=>l.id).join('.'),nom.replace(/[|\n]/g,' '),ciudad().replace(/[|\n]/g,' ')].join('|')}`;
+  txt+=`\n\nCódigo: ${['EI1',st.fecha||'',st.hora||'',n,r.lines.map(l=>l.c==='corte'?l.id+'*'+l.q:l.id).join('.'),nom.replace(/[|\n]/g,' '),ciudad().replace(/[|\n]/g,' ')].join('|')}`;
   const miss=!st.fecha?'Elige una fecha':!st.turno||!st.hora?'Elige el horario':fuera()&&n<BIG?`Mínimo ${BIG} invitados fuera de la ciudad`:!okSlot()?'Ese horario no está disponible':n<cfg.minimo?`Mínimo ${cfg.minimo} personas`:!has('fuerte')?'Elige tu plato fuerte':'';
   const menu=[['entrada','Entradas'],['fuerte','Plato fuerte'],['corte','Cortes'],['postre','Postre']].filter(([k])=>has(k)).map(([k,t])=>`<h5>${t}</h5>${r.lines.filter(l=>l.c===k).map(l=>`<div class="pl">${esc(clean(l.n))}${k==='corte'?` · ${l.q} pza${l.q>1?'s':''}`:''}</div>`).join('')}`).join('');
   $('#sum').innerHTML=`<div class="carta"><img class="lg" src="img/logo-verde.png" alt="Experiencia Ibérica">
   <div class="t1">Una noche ibérica</div><div class="t2">${nom?'en casa de '+esc(nom):'en tu casa'}</div>
   <div class="dt">${st.fecha?esc(fecha(st.fecha)):'Elige tu fecha'}${st.hora?' · '+st.hora+' h':''}${n?' · '+n+' invitados':''}${fuera()?' · '+esc(ciudad()):''}</div>
   <div class="orn">✦</div>${menu||'<div class="vac">Tu menú aparecerá aquí</div>'}<div class="orn">✦</div>
-  <div class="lbl">Total estimado${fuera()?' (más traslado)':''}</div><div class="total">${money(r.total)}</div><div class="lbl">${r.total?money(r.pp)+' por persona':'Elige tu menú para ver el total'}</div>
+  ${st.shown&&ok?`<div class="lbl">Total de tu experiencia${fuera()?' (más traslado)':''}</div><div class="total">${money(r.total)}</div><div class="lbl">Incluye chef, equipo de cocina e ingredientes · ${n} invitados</div>
   <ul>${r.desc?`<li>Cortesía por grupo<b>−${money(r.desc)}</b></li>`:''}<li>Anticipo para reservar (${cfg.anticipo}%)<b>${money(r.ant)}</b></li></ul>
-  <a class="wa${ok?'':' off'}" href="https://wa.me/${WA}?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener">${ok?'Enviar por WhatsApp':esc(miss)}</a>
+  <a class="wa" href="https://wa.me/${WA}?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener">Enviar por WhatsApp</a>`:`<button class="wa${ok?'':' off'}" id="verQ" style="width:100%;border:0;cursor:pointer"${ok?'':' disabled'}>${ok?'Ver mi cotización':esc(miss)}</button>`}
   <button class="dl" id="dlCarta"${r.lines.length?'':' disabled'}>Descargar mi carta para compartir</button>
   <p class="small">Precio estimado, sujeto a confirmación. No incluye loza, montaje, bebidas ni meseros.</p></div>`;
-  $('#barT').textContent=money(r.total);
+  $('#barT').textContent=st.shown&&ok?money(r.total):'—';$('#barL').textContent=st.shown&&ok?'Total de tu experiencia':ok?'Tu menú está listo':'Arma tu menú';
 }
 async function cartaImg(btn){
   if(!window.html2canvas){alert('No se pudo preparar la imagen. Intenta de nuevo.');return}
@@ -151,16 +160,18 @@ async function cartaImg(btn){
   }catch(e){alert('No se pudo crear la imagen de tu carta.')}
   finally{btn.disabled=false;btn.textContent=old}
 }
-$('#sum').addEventListener('click',e=>{if(e.target.id==='dlCarta')cartaImg(e.target)});
+$('#sum').addEventListener('click',e=>{if(e.target.id==='dlCarta')cartaImg(e.target);if(e.target.id==='verQ'){st.shown=true;renderSum();document.querySelector('.carta .total')?.scrollIntoView({block:'center',behavior:'smooth'})}});
+const ch=()=>{st.shown=false};
 function all(){renderCal();renderTurnos();renderSum()}
-$('#cal').onclick=e=>{const f=e.target.dataset?.f;if(!f||e.target.disabled)return;st.fecha=f;st.turno=null;st.hora=null;all()};
+$('#cal').onclick=e=>{const f=e.target.dataset?.f;if(!f||e.target.disabled)return;ch();st.fecha=f;st.turno=null;st.hora=null;all()};
 $('#prev').onclick=()=>{if(mOff>0){mOff--;renderCal()}};$('#next').onclick=()=>{if(mOff<11){mOff++;renderCal()}};
-$('#turnos').onclick=e=>{const t=e.target.dataset?.t;if(!t||e.target.disabled)return;st.turno=t;st.hora=null;renderTurnos();renderSum()};
-$('#horas').onclick=e=>{const h=e.target.dataset?.h;if(!h)return;st.hora=h;renderTurnos();renderSum()};
+$('#turnos').onclick=e=>{const t=e.target.dataset?.t;if(!t||e.target.disabled)return;ch();st.turno=t;st.hora=null;renderTurnos();renderSum()};
+$('#horas').onclick=e=>{const h=e.target.dataset?.h;if(!h)return;ch();st.hora=h;renderTurnos();renderSum()};
 $('#horas').addEventListener('input',e=>{if(e.target.id==='ho'){st.hora=e.target.value;renderSum()}});
-$('#n').addEventListener('input',()=>{renderTurnos();renderSum()});
-$('#ciu').addEventListener('change',()=>{$('#otraBox').hidden=!fuera();renderTurnos();renderSum()});$('#otra').addEventListener('input',renderSum);$('#nom').addEventListener('input',renderSum);
-$('#menu').addEventListener('change',e=>{const id=e.target.dataset.id;if(id){e.target.checked?st.sel[id]=1:delete st.sel[id];renderSum()}});
+$('#n').addEventListener('input',()=>{ch();renderMenu();renderTurnos();renderSum()});
+$('#ciu').addEventListener('change',()=>{ch();$('#otraBox').hidden=!fuera();renderTurnos();renderSum()});$('#otra').addEventListener('input',renderSum);$('#nom').addEventListener('input',renderSum);
+$('#menu').addEventListener('change',e=>{const id=e.target.dataset.id;if(id){ch();e.target.checked?st.sel[id]=1:(delete st.sel[id],delete st.qty[id]);renderMenu();renderSum()}});
+$('#menu').addEventListener('click',e=>{const d=e.target.dataset,id=d.m||d.p;if(!id)return;const c=cat.find(x=>x.id===id),n=+$('#n').value||0;ch();st.qty[id]=Math.max(1,qtyOf(c,n)+(d.p?1:-1));renderMenu();renderSum()});
 function init(D){cfg={...cfg,...(D.cfg||{})};cat=D.cat||[];evs=D.ev||[];WA=D.wa||WA;MIN_DAYS=D.minDias??3;BIG=D.grande??25;
   minDate=new Date(today);minDate.setDate(minDate.getDate()+MIN_DAYS);
   if(D.upd)$('#upd').textContent='Disponibilidad actualizada el '+new Date(D.upd).toLocaleDateString('es-MX',{day:'numeric',month:'long'});

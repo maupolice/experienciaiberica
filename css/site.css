@@ -177,3 +177,9 @@ footer p{margin:4px 0}
 @media(prefers-reduced-motion:reduce){.tl li{opacity:1;transform:none;transition:none}.map path{transition:none}}
 .city{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:14px}
 select{width:100%;font:16px Inter;padding:11px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);min-height:46px;margin-top:4px}
+.dishw{border-bottom:1px dashed var(--line)}.dishw .dish{border-bottom:0}
+.dx{padding:0 0 12px 34px}.dx small{display:block;font:13px Inter;color:var(--mute)}
+.stp{display:inline-flex;align-items:center;gap:14px;margin:8px 0 4px;border:1px solid var(--line);border-radius:99px;padding:3px}
+.stp button{width:38px;height:38px;border-radius:50%;border:0;background:var(--soft);color:var(--g);font:600 20px Inter;cursor:pointer}
+.stp b{font:600 15px Inter;min-width:70px;text-align:center}
+.dx .sg{color:var(--g);font-weight:500}
