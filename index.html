@@ -12,11 +12,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/site.css">
+<script src="js/analytics.js" defer></script>
 </head>
 <body>
 <nav class="nav" id="nav">
   <a href="#inicio" aria-label="Inicio"><img src="img/logo-blanco.png" alt="Experiencia Ibérica"></a>
-  <ul><li><a href="#experiencia">La experiencia</a></li><li><a href="#galeria">Galería</a></li><li><a href="#espana">España</a></li><li><a href="#incluye">Qué incluye</a></li><li><a href="#faq">Preguntas</a></li><li><a href="#instagram">Instagram</a></li></ul>
+  <ul><li><a href="#experiencia">La experiencia</a></li><li><a href="#espana">España</a></li><li><a href="#faq">Preguntas</a></li><li><a href="#instagram">Instagram</a></li></ul>
   <a class="btn saf" href="cotiza.html">Cotiza tu evento</a>
 </nav>
 
@@ -30,13 +31,27 @@
   </div>
 </header>
 
+<section id="invitados" class="inv">
+  <div class="wrap">
+    <div class="proof"><div><b>16 mil</b><span>seguidores en Instagram</span></div><div><b>Sevilla</b><span>formación en restaurantes de España</span></div><div><b>En vivo</b><span>cocinamos frente a tus invitados</span></div></div>
+    <div class="eyebrow">Invitados</div>
+    <h2 class="sh">Han disfrutado nuestra cocina</h2>
+    <div class="fam">
+      <figure><img src="img/famoso-1.jpg" alt="Mauricio Serna con Andrés Guardado" loading="lazy" style="object-position:center 30%"><figcaption>Andrés Guardado</figcaption></figure>
+      <figure><img src="img/famoso-2.jpg" alt="Mauricio Serna con Dustin Johnson" loading="lazy" style="object-position:center 30%"><figcaption>Dustin Johnson</figcaption></figure>
+      <figure><img src="img/famoso-3.jpg" alt="Mauricio Serna con Carlos Acevedo" loading="lazy" style="object-position:center 35%"><figcaption>Carlos Acevedo</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+
 <section id="experiencia">
   <div class="wrap">
     <div class="eyebrow">La experiencia</div>
     <h2 class="sh">Una cena española hecha al momento, sin que te muevas de casa</h2>
     <p class="lead">Llegamos con todo lo de la cocina: ingredientes, paelleras, fuego y equipo. Cocinamos en vivo y servimos cada tiempo recién hecho.</p>
     <div class="steps">
-      <div><b>1</b><h3>Arma tu menú</h3><p>Elige fecha, número de invitados, tus entradas, el plato fuerte y el postre. El total aparece al momento.</p></div>
+      <div><b>1</b><h3>Arma tu menú</h3><p>Elige tus entradas, el plato fuerte y el postre. Tu carta se arma mientras eliges y al final ves el total.</p></div>
       <div><b>2</b><h3>Aparta tu fecha</h3><p>Nos mandas tu cotización por WhatsApp, confirmamos los detalles y la fecha queda reservada con un anticipo.</p></div>
       <div><b>3</b><h3>Disfruta con los tuyos</h3><p>El día del evento cocinamos en tu casa, frente a tus invitados, y servimos cada platillo recién hecho.</p></div>
     </div>
@@ -60,7 +75,7 @@
 
 <section class="dark">
   <div class="wrap chef">
-    <img src="img/chef-paella.jpg" alt="Mauricio Serna Fernández con una paella recién hecha" loading="lazy">
+    <img src="img/chef-paella.jpg" decoding="async" alt="Mauricio Serna Fernández con una paella recién hecha" loading="lazy">
     <div>
       <div class="eyebrow">El chef</div>
       <h2 class="sh">Mauricio Serna Fernández</h2>
@@ -81,33 +96,6 @@
       <div class="rg" id="rg" aria-live="polite"></div>
     </div>
     <div class="chips rgchips" id="rgchips"></div>
-  </div>
-</section>
-
-<section id="invitados">
-  <div class="wrap">
-    <div class="eyebrow">Invitados</div>
-    <h2 class="sh">Han disfrutado nuestra cocina</h2>
-    <div class="fam">
-      <figure><img src="img/famoso-1.jpg" alt="Mauricio Serna con Andrés Guardado" loading="lazy" style="object-position:center 30%"><figcaption>Andrés Guardado</figcaption></figure>
-      <figure><img src="img/famoso-2.jpg" alt="Mauricio Serna con Dustin Johnson" loading="lazy" style="object-position:center 30%"><figcaption>Dustin Johnson</figcaption></figure>
-      <figure><img src="img/famoso-3.jpg" alt="Mauricio Serna con Carlos Acevedo" loading="lazy" style="object-position:center 35%"><figcaption>Carlos Acevedo</figcaption></figure>
-    </div>
-  </div>
-</section>
-
-<section id="noche" class="dark">
-  <div class="wrap">
-    <div class="eyebrow">Así es tu noche</div>
-    <h2 class="sh">Del primer fuego al último bocado</h2>
-    <ol class="tl">
-      <li><b>Días antes</b><h3>Afinamos los detalles</h3><p>Confirmamos menú, invitados y alergias. En nuestra cocina preparamos todo lo que lleva tiempo: fondos, croquetas, tortillas y salsas.</p></li>
-      <li><b>Antes de que lleguen</b><h3>Montamos la cocina en tu casa</h3><p>Llegamos con paelleras, quemadores, ingredientes y utensilios, y armamos la cocina en tu jardín o terraza.</p></li>
-      <li><b>Llegan tus invitados</b><h3>Salen las entradas</h3><p>Tapas recién hechas mientras tus invitados se saludan y brindan.</p></li>
-      <li><b>El momento estrella</b><h3>El arroz, frente a todos</h3><p>El arroz o los cortes se terminan en vivo. El aroma, el fuego y la paellera al centro: aquí empieza la experiencia.</p></li>
-      <li><b>A la mesa</b><h3>Servimos el plato fuerte</h3><p>Cada porción sale en su punto, directo de la paellera o la parrilla.</p></li>
-      <li><b>Sobremesa</b><h3>Postre y despedida</h3><p>Llega el postre y recogemos nuestra cocina. Tú solo te quedas con el recuerdo.</p></li>
-    </ol>
   </div>
 </section>
 
@@ -157,7 +145,7 @@
 <footer>
   <div class="wrap">
     <img src="img/logo-blanco.png" alt="Experiencia Ibérica">
-    <div><p>Torreón, Coahuila</p><p><a href="https://wa.me/528715554141" target="_blank" rel="noopener">WhatsApp 871 555 4141</a> · <a href="https://www.instagram.com/experienciaiberica" target="_blank" rel="noopener">Instagram @experienciaiberica</a> · <a href="https://www.tiktok.com/@mau.serna" target="_blank" rel="noopener">TikTok @mau.serna</a></p><p id="upd" style="font-size:13px;opacity:.7"></p><p style="font-size:13px;margin-top:10px"><a href="https://claude.ai/artifact/J5kVzDFW1enjaiDdUqpLAN" style="opacity:.55;font-weight:400" rel="nofollow">Acceso chef</a></p></div>
+    <div><p>Torreón, Coahuila</p><p><a href="https://wa.me/528715554141" target="_blank" rel="noopener">WhatsApp 871 555 4141</a> · <a href="https://www.instagram.com/experienciaiberica" target="_blank" rel="noopener">Instagram @experienciaiberica</a> · <a href="https://www.tiktok.com/@mau.serna" target="_blank" rel="noopener">TikTok @mau.serna</a></p><p id="upd" style="font-size:13px;opacity:.7"></p><p style="font-size:13px;margin-top:10px"><a href="aviso-de-privacidad.html" style="opacity:.7;font-weight:400">Aviso de privacidad</a> · <a href="https://claude.ai/artifact/J5kVzDFW1enjaiDdUqpLAN" style="opacity:.55;font-weight:400" rel="nofollow">Acceso chef</a></p></div>
   </div>
 </footer>
 
@@ -182,13 +170,11 @@ fetch('data/espana.json').then(r=>r.json()).then(G=>{
   map.addEventListener('click',e=>pick(e.target.dataset?.id));map.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(e.target.dataset?.id)}});
   ch.addEventListener('click',e=>pick(e.target.dataset?.id));pick('01');
 }).catch(()=>{document.getElementById('espana').style.display='none'});
-const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.35});
-document.querySelectorAll('.tl li').forEach(li=>io.observe(li));
 const nav=document.getElementById('nav');const onS=()=>nav.classList.toggle('solid',scrollY>60);addEventListener('scroll',onS,{passive:true});onS();
 // Reels o publicaciones de Instagram a mostrar (links completos)
 const IG=['DfUvoe-Rfx-','DeCpzYzx0Il','DeeweVTRRGu','DffZZyuRcej','DfZ17wVxcy-','DfnAKsWR4mW'].map(id=>`https://www.instagram.com/reel/${id}/`);
 const box=document.getElementById('ig');
-if(IG.length){box.innerHTML=IG.map(u=>`<div class="post"><blockquote class="instagram-media" data-instgrm-permalink="${u}" data-instgrm-version="14"></blockquote></div>`).join('');const sc=document.createElement('script');sc.async=true;sc.src='https://www.instagram.com/embed.js';document.body.appendChild(sc)}
+if(IG.length){const load=()=>{box.innerHTML=IG.map(u=>`<div class="post"><blockquote class="instagram-media" data-instgrm-permalink="${u}" data-instgrm-version="14"></blockquote></div>`).join('');const sc=document.createElement('script');sc.async=true;sc.src='https://www.instagram.com/embed.js';document.body.appendChild(sc)};const o=new IntersectionObserver(es=>{if(es.some(x=>x.isIntersecting)){o.disconnect();load()}},{rootMargin:'600px'});o.observe(box)}
 else{box.innerHTML=[['arroz-alberca','Arroz junto a la alberca'],['chef-parrilla','Paella a la parrilla'],['emplatado','Emplatado en vivo']].map(([f,a])=>`<a class="post" href="https://www.instagram.com/experienciaiberica" target="_blank" rel="noopener"><img src="img/${f}.jpg" alt="${a}" loading="lazy" style="width:100%;aspect-ratio:4/5;object-fit:cover"></a>`).join('')}
 }
 </script>

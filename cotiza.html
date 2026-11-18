@@ -13,70 +13,74 @@
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/site.css">
 <script src="js/html2canvas.min.js"></script>
+<script src="js/analytics.js" defer></script>
 </head>
 <body class="cz-page">
 <nav class="nav solid" id="nav">
   <a href="./" aria-label="Inicio"><img src="img/logo-blanco.png" alt="Experiencia Ibérica"></a>
-  <ul><li><a href="./#experiencia">La experiencia</a></li><li><a href="./#galeria">Galería</a></li><li><a href="./#incluye">Qué incluye</a></li></ul>
+  <ul><li><a href="./#experiencia">La experiencia</a></li><li><a href="./#espana">España</a></li><li><a href="./#faq">Preguntas</a></li></ul>
   <a class="btn line" href="./">Inicio</a>
 </nav>
-<header class="top-cz"><div class="wrap"><div class="eyebrow">Cotiza</div><h1 class="sh">Arma tu noche ibérica</h1><p class="lead">Elige tu fecha y tu menú. A un lado se va armando la carta de tu evento; al terminar, toca "Ver mi cotización" para conocer el total y mándanosla por WhatsApp con un solo toque.</p></div></header>
-<section id="cotiza" style="padding-top:40px"><div class="wrap">
-<div class="cz">
-      <div>
-        <div class="box"><h3><b>1</b>Fecha</h3>
-          <p class="hint">Punto verde: disponible. Punto dorado: queda un solo horario.</p>
-          <div class="calhead"><button class="navb" id="prev" aria-label="Mes anterior">‹</button><strong id="mes"></strong><button class="navb" id="next" aria-label="Mes siguiente">›</button></div>
-          <div class="cal" id="cal"></div>
-          <div class="legend"><span><i style="background:var(--free)"></i>Disponible</span><span><i style="background:var(--saf)"></i>Un horario libre</span><span><i style="background:var(--line)"></i>Ocupado o muy próximo</span></div>
-          <div id="dateNote"></div>
-        </div>
-        <div class="box"><h3><b>2</b>Horario e invitados</h3>
-          <p class="hint">La hora es cuando quieres empezar a comer o cenar.</p>
-          <div class="chips" id="turnos"></div>
-          <div class="chips" id="horas" style="margin-top:10px"></div>
-          <div class="row2">
-            <div><label for="n">Número de invitados</label><input id="n" type="number" min="1" inputmode="numeric" value="12"></div>
-            <div><label for="nom">Tu nombre</label><input id="nom" autocomplete="name"></div>
-          </div>
-          <div class="city">
-            <div><label for="ciu">Ciudad del evento</label><select id="ciu"><option>Torreón</option><option>Gómez Palacio</option><option>Lerdo</option><option value="otra">Otra ciudad</option></select></div>
-            <div id="otraBox" hidden><label for="otra">¿Qué ciudad?</label><input id="otra" placeholder="Ej. Monterrey, Saltillo"></div>
-          </div>
-          <div id="slotNote"></div>
-        </div>
-        <div class="box menu"><h3><b>3</b>Tu menú</h3>
-          <p class="hint">Recomendamos 2 a 3 entradas, un plato fuerte y un postre.</p>
-          <div id="menu"><p class="hint">Cargando menú…</p></div>
-        </div>
+<header class="top-cz"><div class="wrap"><div class="eyebrow">Cotiza</div><h1 class="sh">Arma tu noche ibérica</h1><p class="lead">Elige tu menú y tu fecha. Tu carta se arma mientras eliges, y al final ves el total de tu experiencia.</p></div></header>
+<section id="cotiza"><div class="wrap"><div class="cz">
+  <div>
+    <div class="box"><h3><b>1</b>Fecha</h3>
+      <p class="hint">Verde: disponible · Dorado: queda un horario</p>
+      <div id="calWrap">
+        <div class="calhead"><button class="navb" id="prev" aria-label="Mes anterior">‹</button><strong id="mes"></strong><button class="navb" id="next" aria-label="Mes siguiente">›</button></div>
+        <div class="cal" id="cal"></div>
       </div>
-      <aside class="sum" id="sum"></aside>
+      <label class="nofecha"><input type="checkbox" id="sinF"> Aún no tengo fecha, solo quiero conocer el precio</label>
+      <div id="dateNote"></div>
+    </div>
+    <div class="box" id="boxHorario"><h3><b>2</b>Detalles</h3>
+      <div id="horWrap"><p class="hint">¿A qué hora quieren empezar a comer o cenar?</p>
+      <div class="chips" id="turnos"></div>
+      <div class="chips" id="horas" style="margin-top:10px"></div></div>
+      <div class="row2">
+        <div><label for="n">Invitados</label><div class="cnt"><button type="button" id="nMenos" aria-label="Menos invitados">−</button><input id="n" type="number" min="1" inputmode="numeric" value="12"><button type="button" id="nMas" aria-label="Más invitados">+</button></div></div>
+        <div><label for="nom">Tu nombre</label><input id="nom" autocomplete="name"></div>
+      </div>
+      <div class="row2">
+        <div><label for="ciu">Ciudad del evento</label><select id="ciu"><option>Torreón</option><option>Gómez Palacio</option><option>Lerdo</option><option value="otra">Otra ciudad</option></select></div>
+        <div id="otraBox" hidden><label for="otra">¿Qué ciudad?</label><input id="otra" placeholder="Ej. Monterrey"></div>
+      </div>
+      <div id="slotNote"></div>
+    </div>
+    <div class="box menu"><h3><b>3</b>Tu menú</h3>
+      <p class="hint">Recomendamos 2 a 3 entradas, un plato fuerte y un postre.</p>
+      <div id="menu"><p class="hint">Cargando menú…</p></div>
     </div>
   </div>
-</section>
-<div class="bar" id="bar"><div><div style="font-size:12px;opacity:.75" id="barL">Arma tu menú</div><b id="barT">—</b></div><a href="#sum">Ver mi carta ↓</a></div>
+  <aside class="sum" id="sum" aria-label="Tu carta"></aside>
+</div></div></section>
+<div class="bar" id="bar"><div class="bi"><div id="barL">Tu carta</div><b id="barT">Elige tus platillos</b></div><button type="button" id="barB">Ver mi carta</button></div>
 <footer>
   <div class="wrap">
     <img src="img/logo-blanco.png" alt="Experiencia Ibérica">
-    <div><p>Torreón, Coahuila</p><p><a href="https://wa.me/528715554141" target="_blank" rel="noopener">WhatsApp 871 555 4141</a> · <a href="https://www.instagram.com/experienciaiberica" target="_blank" rel="noopener">Instagram @experienciaiberica</a> · <a href="https://www.tiktok.com/@mau.serna" target="_blank" rel="noopener">TikTok @mau.serna</a></p><p id="upd" style="font-size:13px;opacity:.7"></p><p style="font-size:13px;margin-top:10px"><a href="https://claude.ai/artifact/J5kVzDFW1enjaiDdUqpLAN" style="opacity:.55;font-weight:400" rel="nofollow">Acceso chef</a></p></div>
+    <div><p>Torreón, Coahuila</p><p><a href="https://wa.me/528715554141" target="_blank" rel="noopener">WhatsApp 871 555 4141</a> · <a href="https://www.instagram.com/experienciaiberica" target="_blank" rel="noopener">Instagram @experienciaiberica</a> · <a href="https://www.tiktok.com/@mau.serna" target="_blank" rel="noopener">TikTok @mau.serna</a></p><p id="upd" style="font-size:13px;opacity:.7"></p><p style="font-size:13px;margin-top:10px"><a href="aviso-de-privacidad.html" style="opacity:.7;font-weight:400">Aviso de privacidad</a> · <a href="https://claude.ai/artifact/J5kVzDFW1enjaiDdUqpLAN" style="opacity:.55;font-weight:400" rel="nofollow">Acceso chef</a></p></div>
   </div>
 </footer>
-
 <script>
 {
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let cfg={anticipo:50,ayudante:400,servicio:500,descPct:10,descDesde:40,minimo:10,tiers:[]},cat=[],evs=[],WA='528715554141',MIN_DAYS=3,BIG=25;
 const T={comida:{n:'Comida',h:['13:00','13:30','14:00','14:30','15:00']},cena:{n:'Cena',h:['20:00','20:30','21:00','21:30','22:00']}};
+const GR=[['entrada','Entradas'],['fuerte','Plato fuerte'],['corte','Cortes'],['postre','Postre']];
 const money=n=>'$'+Math.round(n||0).toLocaleString('es-MX'),pad=x=>String(x).padStart(2,'0');
 const iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
 const mins=h=>{const[a,b]=(h||'0:0').split(':').map(Number);return a*60+b};
 const slotOf=h=>{const m=mins(h);return m>=780&&m<=900?'comida':m>=1200&&m<=1320?'cena':'dia'};
-const clean=s=>s.replace(/\s*\(Brum[ée]a[^)]*\)/,'').replace(/\s*\((1 kg|350 g)\)/,'');
-const today=new Date();today.setHours(0,0,0,0);let minDate;
-let mOff=0,st={fecha:null,turno:null,hora:null,sel:{},qty:{},shown:false};
+const clean=s=>s.replace(/\s*\((1 kg|350 g)\)/,'');
+const today=new Date();today.setHours(0,0,0,0);let minDate=new Date(today);minDate.setDate(minDate.getDate()+MIN_DAYS);
+let mOff=0,st={fecha:null,turno:null,hora:null,sel:{},qty:{},shown:false,sinF:false};
 const fecha=f=>f?new Date(f+'T12:00').toLocaleDateString('es-MX',{weekday:'long',day:'numeric',month:'long'}):'';
-function day(f){const es=evs.filter(e=>e.f===f);const all=es.some(e=>slotOf(e.h)==='dia'||e.p>=BIG);
-  return{comida:all||es.some(e=>slotOf(e.h)==='comida'),cena:all||es.some(e=>slotOf(e.h)==='cena'),any:es.length>0}}
+const N=()=>Math.max(0,+$('#n').value||0);
+const fuera=()=>$('#ciu').value==='otra',ciudad=()=>fuera()?($('#otra').value.trim()||'Otra ciudad'):$('#ciu').value;
+function day(f){const es=evs.filter(e=>e.f===f);const all=es.some(e=>slotOf(e.h)==='dia'||e.p>=BIG);return{comida:all||es.some(e=>slotOf(e.h)==='comida'),cena:all||es.some(e=>slotOf(e.h)==='cena'),any:es.length>0}}
+const soon=()=>st.fecha&&new Date(st.fecha+'T00:00')<minDate;
+function okSlot(){const n=N();if(fuera()&&n<BIG)return false;if(st.sinF)return true;if(!st.fecha||!st.turno||!st.hora||soon())return false;const s=day(st.fecha);return n>=BIG||st.turno==='otro'||fuera()?!s.any:!s[st.turno]}
+/* ---------- calendario ---------- */
 function renderCal(){
   const m=new Date(today.getFullYear(),today.getMonth()+mOff,1);$('#mes').textContent=m.toLocaleDateString('es-MX',{month:'long',year:'numeric'}).replace(/^./,x=>x.toUpperCase());
   $('#prev').disabled=mOff<=0;$('#next').disabled=mOff>=11;
@@ -87,96 +91,114 @@ function renderCal(){
     const c=dt<today?'past':dt<minDate?'soon':(s.comida&&s.cena)?'full':(s.comida||s.cena)?'par':'';
     const lab={past:'pasado',full:'ocupado',soon:'consultar',par:'un horario libre','':'disponible'}[c];
     h+=`<button data-f="${f}" class="${c}${st.fecha===f?' on':''}" aria-label="${d}, ${lab}"${c==='past'||c==='full'?' disabled':''}>${d}</button>`}
-  $('#cal').innerHTML=h;
+  $('#cal').innerHTML=h;$('#calWrap').classList.toggle('off',st.sinF);
 }
 function renderTurnos(){
-  const s=st.fecha?day(st.fecha):{comida:false,cena:false,any:false},soon=st.fecha&&new Date(st.fecha+'T00:00')<minDate;
-  $('#dateNote').innerHTML=soon?`<div class="note">Para fechas en menos de ${MIN_DAYS} días, escríbenos directamente y vemos si es posible: <a href="https://wa.me/${WA}?text=${encodeURIComponent('Hola, me interesa una Experiencia Ibérica en casa para el '+fecha(st.fecha)+'. ¿Tienen disponibilidad?')}" target="_blank" rel="noopener">WhatsApp</a></div>`:'';
-  $('#turnos').innerHTML=[['comida',s.comida],['cena',s.cena],['otro',s.any]].map(([k,dis])=>`<button class="chip${st.turno===k?' on':''}${st.fecha&&dis&&k!=='otro'?' occ':''}" data-t="${k}"${dis||!st.fecha||soon?' disabled':''}>${k==='otro'?'Otro horario':T[k].n+' · '+T[k].h[0]+' a '+T[k].h[4]}</button>`).join('');
+  const s=st.fecha?day(st.fecha):{comida:false,cena:false,any:false},n=N();
+  $('#dateNote').innerHTML=!st.sinF&&soon()?`<div class="note">Para fechas en menos de ${MIN_DAYS} días, escríbenos y vemos si es posible: <a href="https://wa.me/${WA}?text=${encodeURIComponent('Hola, me interesa una Experiencia Ibérica en casa para el '+fecha(st.fecha)+'. ¿Tienen disponibilidad?')}" target="_blank" rel="noopener">WhatsApp</a></div>`:'';
+  $('#horWrap').hidden=st.sinF;
+  $('#turnos').innerHTML=[['comida',s.comida],['cena',s.cena],['otro',s.any]].map(([k,dis])=>`<button class="chip${st.turno===k?' on':''}${st.fecha&&dis&&k!=='otro'?' occ':''}" data-t="${k}"${dis||!st.fecha||soon()?' disabled':''}>${k==='otro'?'Otro horario':T[k].n+' · '+T[k].h[0]+'–'+T[k].h[4]}</button>`).join('')+(st.fecha?'':'<span class="hint" style="margin:6px 0 0">Primero elige una fecha</span>');
   $('#horas').innerHTML=st.turno&&st.turno!=='otro'?T[st.turno].h.map(h=>`<button class="chip${st.hora===h?' on':''}" data-h="${h}">${h}</button>`).join(''):st.turno==='otro'?`<div style="width:100%"><label for="ho">Hora de inicio</label><input id="ho" type="time" value="${st.hora||''}" style="max-width:200px"></div>`:'';
-  const n=+$('#n').value||0;let msg='';
+  let msg='';
   if(st.turno==='otro')msg='Un horario fuera de comida o cena ocupa el día completo.';
-  if(n>=BIG&&s.any&&st.fecha)msg=`Para grupos de ${BIG} personas o más reservamos el día completo, y esta fecha ya tiene un evento. Prueba otra fecha.`;
-  else if(n>=BIG)msg=msg||`Para grupos de ${BIG} personas o más, reservamos el día completo para ti.`;
-  if(n&&n<cfg.minimo)msg=`El mínimo es de ${cfg.minimo} personas. Para grupos más pequeños escríbenos y lo platicamos.`;
-  if(fuera())msg=(n<BIG?`Para eventos fuera de la Comarca Lagunera el mínimo es de ${BIG} invitados. `:'')+'Un evento fuera de la ciudad ocupa el día completo, y el traslado se cotiza aparte: te lo confirmamos por WhatsApp.'+(st.fecha&&s.any?' Esta fecha ya tiene un evento; prueba otra.':'');
+  if(n>=BIG&&s.any&&st.fecha&&!st.sinF)msg=`Para ${BIG} invitados o más reservamos el día completo, y esta fecha ya tiene un evento. Prueba otra fecha.`;
+  else if(n>=BIG)msg=msg||`Para ${BIG} invitados o más, reservamos el día completo para ti.`;
+  if(n&&n<cfg.minimo)msg=`El mínimo es de ${cfg.minimo} invitados. Para grupos más pequeños escríbenos.`;
+  if(fuera())msg=(n<BIG?`Fuera de la Comarca Lagunera el mínimo es de ${BIG} invitados. `:'')+'El evento ocupa el día completo y el traslado se cotiza aparte.';
+  if(st.sinF)msg=(msg?msg+' ':'')+'Sin fecha te damos el precio; la disponibilidad se confirma cuando la elijas.';
   $('#slotNote').innerHTML=msg?`<div class="note">${msg}</div>`:'';
 }
-const fuera=()=>$('#ciu').value==='otra';
-const ciudad=()=>fuera()?($('#otra').value.trim()||'Otra ciudad'):$('#ciu').value;
-function okSlot(){const n=+$('#n').value||0;if(!st.fecha||!st.turno||!st.hora||new Date(st.fecha+'T00:00')<minDate)return false;if(fuera()&&n<BIG)return false;const s=day(st.fecha);return n>=BIG||st.turno==='otro'||fuera()?!s.any:!s[st.turno]}
+/* ---------- menú ---------- */
 const hasMain=()=>cat.some(x=>x.c==='fuerte'&&st.sel[x.id]);
 const sugCorte=(c,n)=>hasMain()?Math.max(1,Math.ceil(n/((c.po||1)*3))):Math.max(1,Math.ceil(n/(c.po||1)));
 const qtyOf=(c,n)=>c.u==='persona'?n:c.c==='corte'?(st.qty[c.id]??sugCorte(c,n)):Math.max(1,Math.ceil(n/(c.po||1)));
 function renderMenu(){
-  const n=+$('#n').value||0;
-  $('#menu').innerHTML=[['entrada','Entradas'],['fuerte','Platos fuertes'],['corte','Cortes'],['postre','Postres']].map(([k,t])=>{const its=cat.filter(c=>c.c===k);if(!its.length)return'';
-    const intro=k==='corte'?`<p class="hint" style="margin:0 0 4px">Como plato fuerte o al centro para compartir. Te sugerimos la cantidad y tú decides.</p>`:'';
-    return`<h4>${t}</h4>${intro}${its.map(c=>{const on=st.sel[c.id];let extra='';
-      if(k==='corte'){const po=c.po||1,full=Math.max(1,Math.ceil(n/po)),cen=Math.max(1,Math.ceil(n/(po*3))),q=qtyOf(c,n),sug=sugCorte(c,n);
-        extra=`<small>1 pieza: porción completa para ${String(po).replace('.',',')} ${po===1?'persona':'personas'}, o al centro para ~${po*3}</small>`;
-        if(on)extra+=`<div class="stp"><button type="button" data-m="${esc(c.id)}" aria-label="Menos piezas">−</button><b>${q} pieza${q>1?'s':''}</b><button type="button" data-p="${esc(c.id)}" aria-label="Más piezas">+</button></div><small class="sg">${hasMain()?`Sugerido: ${sug} al centro para compartir con el arroz. Para porción completa de todos: ${full}.`:`Sugerido: ${sug} para que todos coman su porción completa.`}</small>`}
-      return`<div class="dishw"><label class="dish"><input type="checkbox" data-id="${esc(c.id)}"${on?' checked':''}><span>${esc(clean(c.n))}</span></label>${extra?`<div class="dx">${extra}</div>`:''}</div>`}).join('')}`}).join('')||'<p class="hint">El menú no está disponible en este momento. Escríbenos por WhatsApp.</p>';
+  const n=N();
+  $('#menu').innerHTML=GR.map(([k,t])=>{const its=cat.filter(c=>c.c===k);if(!its.length)return'';
+    const cnt=its.filter(c=>st.sel[c.id]).length;
+    const head=`<div class="gh"><h4>${k==='fuerte'?'Platos fuertes':t==='Postre'?'Postres':t}</h4>${k==='postre'?'<img class="brm" src="img/brumea.png" alt="Postres de Bruméa" onerror="this.remove()">':''}<span class="gc">${cnt?cnt+' elegido'+(cnt>1?'s':''):''}</span></div>`;
+    const intro=k==='corte'?'<p class="hint gi">Como plato fuerte o al centro para compartir. Te sugerimos la cantidad.</p>':k==='postre'?'<p class="hint gi">Repostería artesanal de Bruméa.</p>':'';
+    return head+intro+its.map(c=>{const on=!!st.sel[c.id];let x='';
+      if(k==='corte'&&on){const po=c.po||1,full=Math.max(1,Math.ceil(n/po)),q=qtyOf(c,n),sug=sugCorte(c,n);
+        x=`<div class="dx"><div class="stp"><button type="button" data-m="${esc(c.id)}" aria-label="Menos piezas">−</button><b>${q} pieza${q>1?'s':''}</b><button type="button" data-p="${esc(c.id)}" aria-label="Más piezas">+</button></div><small class="sg">${hasMain()?`Sugerido: ${sug} al centro para compartir. Porción completa para todos: ${full}.`:`Sugerido: ${sug} para que todos coman su porción completa.`}</small></div>`}
+      const sub=k==='corte'?`${esc(c.d||'')} · rinde ${String(c.po).replace('.',',')} porción${c.po>1?'es':''} completa${c.po>1?'s':''} o ~${(c.po||1)*3} al centro`:esc(c.d||'');
+      return`<div class="dishw${on?' on':''}"><label class="dish"><input type="checkbox" data-id="${esc(c.id)}"${on?' checked':''}><span><span class="dn">${esc(clean(c.n))}</span>${sub?`<small>${sub}</small>`:''}</span></label>${x}</div>`}).join('')}).join('')||'<p class="hint">El menú no está disponible en este momento. Escríbenos por WhatsApp.</p>';
 }
 function servicio(n){const ts=[...(cfg.tiers||[])].sort((a,b)=>a.max-b.max);let t=ts.find(t=>n<=t.max),ay,gas;
   if(t){ay=t.ayudantes;gas=t.gas}else{const l=ts[ts.length-1]||{max:0,ayudantes:1,gas:0};ay=l.ayudantes+Math.ceil((n-l.max)/15);gas=l.gas}return ay*cfg.ayudante+gas+cfg.servicio}
 function calc(n){let sub=0,post=0;const lines=[];
-  for(const c of cat.filter(c=>st.sel[c.id])){const q=qtyOf(c,n);const v=c.pr*q;c.c==='postre'?post+=v:sub+=v;lines.push({...c,q})}
-  const desc=n>=cfg.descDesde?sub*cfg.descPct/100:0,sv=lines.length?servicio(n):0,total=sub-desc+sv+post;return{lines,desc,total,pp:n?total/n:0,ant:total*cfg.anticipo/100}}
+  for(const c of cat.filter(c=>st.sel[c.id])){const q=qtyOf(c,n),v=c.pr*q;c.c==='postre'?post+=v:sub+=v;lines.push({...c,q})}
+  const desc=n>=cfg.descDesde?sub*cfg.descPct/100:0,sv=lines.length?servicio(n):0,total=sub-desc+sv+post;return{lines,desc,total,ant:total*cfg.anticipo/100}}
+/* ---------- carta ---------- */
 function renderSum(){
-  const n=+$('#n').value||0,r=calc(n),has=k=>r.lines.some(l=>l.c===k),ok=okSlot()&&n>=cfg.minimo&&has('fuerte');
+  const n=N(),r=calc(n),has=k=>r.lines.some(l=>l.c===k),ok=okSlot()&&n>=cfg.minimo&&has('fuerte');
   const by=k=>r.lines.filter(l=>l.c===k).map(l=>clean(l.n)+(k==='corte'?` (${l.q} pza${l.q>1?'s':''})`:'')).join(', ');
   const nom=$('#nom').value.trim(),tt=st.turno==='otro'?'Otro horario':st.turno?T[st.turno].n:'';
-  let txt=`Hola, me interesa una *Experiencia Ibérica en casa*${nom?'. Soy '+nom:''}.\n\nFecha: ${fecha(st.fecha)}\nHorario: ${tt}, ${st.hora||''}\nPersonas: ${n}\nCiudad: ${ciudad()}${fuera()?' (traslado por cotizar)':''}\n`;
-  for(const[k,t]of[['entrada','Entradas'],['fuerte','Plato fuerte'],['corte','Cortes'],['postre','Postre']])if(has(k))txt+=`${t}: ${by(k)}\n`;
-  txt+=`\nTotal estimado: ${money(r.total)} (${money(r.pp)} por persona)\n¿Me confirmas disponibilidad?`;
-  txt+=`\n\nCódigo: ${['EI1',st.fecha||'',st.hora||'',n,r.lines.map(l=>l.c==='corte'?l.id+'*'+l.q:l.id).join('.'),nom.replace(/[|\n]/g,' '),ciudad().replace(/[|\n]/g,' ')].join('|')}`;
-  const miss=!st.fecha?'Elige una fecha':!st.turno||!st.hora?'Elige el horario':fuera()&&n<BIG?`Mínimo ${BIG} invitados fuera de la ciudad`:!okSlot()?'Ese horario no está disponible':n<cfg.minimo?`Mínimo ${cfg.minimo} personas`:!has('fuerte')?'Elige tu plato fuerte':'';
-  const menu=[['entrada','Entradas'],['fuerte','Plato fuerte'],['corte','Cortes'],['postre','Postre']].filter(([k])=>has(k)).map(([k,t])=>`<h5>${t}</h5>${r.lines.filter(l=>l.c===k).map(l=>`<div class="pl">${esc(clean(l.n))}${k==='corte'?` · ${l.q} pza${l.q>1?'s':''}`:''}</div>`).join('')}`).join('');
-  $('#sum').innerHTML=`<div class="carta"><img class="lg" src="img/logo-verde.png" alt="Experiencia Ibérica">
+  let txt=`Hola, me interesa una *Experiencia Ibérica en casa*${nom?'. Soy '+nom:''}.\n\nFecha: ${st.sinF?'por definir':fecha(st.fecha)}\n${st.sinF?'':`Horario: ${tt}, ${st.hora||''}\n`}Personas: ${n}\nCiudad: ${ciudad()}${fuera()?' (traslado por cotizar)':''}\n`;
+  for(const[k,t]of GR)if(has(k))txt+=`${t==='Postre'?'Postre':t}: ${by(k)}\n`;
+  txt+=`\nTotal estimado: ${money(r.total)}\n${st.sinF?'¿Qué fechas tienes disponibles?':'¿Me confirmas disponibilidad?'}`;
+  txt+=`\n\nCódigo: ${['EI1',st.sinF?'':st.fecha||'',st.sinF?'':st.hora||'',n,r.lines.map(l=>l.c==='corte'?l.id+'*'+l.q:l.id).join('.'),nom.replace(/[|\n]/g,' '),ciudad().replace(/[|\n]/g,' ')].join('|')}`;
+  const miss=!st.sinF&&!st.fecha?'Elige una fecha':!st.sinF&&(!st.turno||!st.hora)?'Elige el horario':fuera()&&n<BIG?`Mínimo ${BIG} invitados fuera de la ciudad`:!okSlot()?'Ese horario no está disponible':n<cfg.minimo?`Mínimo ${cfg.minimo} invitados`:!has('fuerte')?'Elige tu plato fuerte':'';
+  const menu=GR.filter(([k])=>has(k)).map(([k,t])=>`<h5>${t}</h5>${r.lines.filter(l=>l.c===k).map(l=>`<div class="pl">${esc(clean(l.n))}${k==='corte'?` · ${l.q} pza${l.q>1?'s':''}`:''}</div>`).join('')}`).join('');
+  const dt=st.sinF?'Fecha por definir':st.fecha?esc(fecha(st.fecha))+(st.hora?' · '+st.hora+' h':''):'Elige tu fecha';
+  $('#sum').innerHTML=`<div class="carta"><button class="cx" id="cx" aria-label="Cerrar">×</button><img class="lg" src="img/logo-verde.png" alt="Experiencia Ibérica">
   <div class="t1">Una noche ibérica</div><div class="t2">${nom?'en casa de '+esc(nom):'en tu casa'}</div>
-  <div class="dt">${st.fecha?esc(fecha(st.fecha)):'Elige tu fecha'}${st.hora?' · '+st.hora+' h':''}${n?' · '+n+' invitados':''}${fuera()?' · '+esc(ciudad()):''}</div>
+  <div class="dt">${dt}${n?' · '+n+' invitados':''}${fuera()?' · '+esc(ciudad()):''}</div>
   <div class="orn">✦</div>${menu||'<div class="vac">Tu menú aparecerá aquí</div>'}<div class="orn">✦</div>
   ${st.shown&&ok?`<div class="lbl">Total de tu experiencia${fuera()?' (más traslado)':''}</div><div class="total">${money(r.total)}</div><div class="lbl">Incluye chef, equipo de cocina e ingredientes · ${n} invitados</div>
   <ul>${r.desc?`<li>Cortesía por grupo<b>−${money(r.desc)}</b></li>`:''}<li>Anticipo para reservar (${cfg.anticipo}%)<b>${money(r.ant)}</b></li></ul>
-  <a class="wa" href="https://wa.me/${WA}?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener">Enviar por WhatsApp</a>`:`<button class="wa${ok?'':' off'}" id="verQ" style="width:100%;border:0;cursor:pointer"${ok?'':' disabled'}>${ok?'Ver mi cotización':esc(miss)}</button>`}
+  <a class="wa" href="https://wa.me/${WA}?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener">Enviar por WhatsApp</a>`:`<button class="wa${ok?'':' off'}" id="verQ"${ok?'':' disabled'}>${ok?'Ver mi cotización':esc(miss)}</button>`}
   <button class="dl" id="dlCarta"${r.lines.length?'':' disabled'}>Descargar mi carta para compartir</button>
   <p class="small">Precio estimado, sujeto a confirmación. No incluye loza, montaje, bebidas ni meseros.</p></div>`;
-  $('#barT').textContent=st.shown&&ok?money(r.total):'—';$('#barL').textContent=st.shown&&ok?'Total de tu experiencia':ok?'Tu menú está listo':'Arma tu menú';
+  const cnt=k=>r.lines.filter(l=>l.c===k).length,parts=[];
+  if(cnt('entrada'))parts.push(cnt('entrada')+' entrada'+(cnt('entrada')>1?'s':''));if(cnt('fuerte'))parts.push(cnt('fuerte')+' fuerte'+(cnt('fuerte')>1?'s':''));if(cnt('corte'))parts.push(cnt('corte')+' corte'+(cnt('corte')>1?'s':''));if(cnt('postre'))parts.push('postre');
+  $('#barL').textContent=st.shown&&ok?'Total de tu experiencia':'Tu carta';
+  $('#barT').textContent=st.shown&&ok?money(r.total):parts.join(' · ')||'Elige tus platillos';
+  const bb=$('#barB');bb.textContent=st.shown&&ok?'Ver y enviar':ok?'Ver cotización':'Ver mi carta';bb.classList.toggle('hot',ok);
 }
 async function cartaImg(btn){
   if(!window.html2canvas){alert('No se pudo preparar la imagen. Intenta de nuevo.');return}
   const old=btn.textContent;btn.disabled=true;btn.textContent='Preparando tu carta…';
   try{
-    const src=document.querySelector('.carta'),clone=src.cloneNode(true);
-    clone.querySelectorAll('.wa,.dl,.small,ul,.total,.lbl').forEach(e=>e.remove());clone.style.outline='none';clone.style.boxShadow='inset 0 0 0 9px #fffdf9,inset 0 0 0 10px #d9cfbf';
+    const clone=document.querySelector('.carta').cloneNode(true);
+    clone.querySelectorAll('.wa,.dl,.small,ul,.total,.lbl,.cx').forEach(e=>e.remove());clone.style.outline='none';clone.style.boxShadow='inset 0 0 0 9px #fffdf9,inset 0 0 0 10px #d9cfbf';
     const pr=document.createElement('div');pr.style.cssText='font:13px Inter;color:#6a665e;margin-top:6px';pr.textContent='experienciaiberica.com · WhatsApp 871 555 4141';clone.appendChild(pr);
     const w=document.createElement('div');w.style.cssText='position:fixed;left:-10000px;top:0;width:420px;padding:28px;background:#f5f2ec';w.appendChild(clone);document.body.appendChild(w);
-    await document.fonts.ready;
-    const cv=await html2canvas(w,{scale:3,backgroundColor:'#f5f2ec',useCORS:true});w.remove();
+    await document.fonts.ready;const cv=await html2canvas(w,{scale:3,backgroundColor:'#f5f2ec',useCORS:true});w.remove();
     const blob=await new Promise(ok=>cv.toBlob(ok,'image/png'));const name='Mi noche ibérica.png',file=new File([blob],name,{type:'image/png'});
     if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:'Mi noche ibérica'});return}catch(e){if(e.name==='AbortError')return}}
     const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);
-  }catch(e){alert('No se pudo crear la imagen de tu carta.')}
-  finally{btn.disabled=false;btn.textContent=old}
+  }catch(e){alert('No se pudo crear la imagen de tu carta.')}finally{btn.disabled=false;btn.textContent=old}
 }
-$('#sum').addEventListener('click',e=>{if(e.target.id==='dlCarta')cartaImg(e.target);if(e.target.id==='verQ'){st.shown=true;renderSum();document.querySelector('.carta .total')?.scrollIntoView({block:'center',behavior:'smooth'})}});
+/* ---------- hoja móvil ---------- */
+const mob=()=>matchMedia('(max-width:900px)').matches;
+const openSheet=()=>{if(mob()){$('#sum').classList.add('open');document.body.classList.add('lock')}};
+const closeSheet=()=>{$('#sum').classList.remove('open');document.body.classList.remove('lock')};
+const reveal=()=>{st.shown=true;renderSum();if(mob())openSheet();else document.querySelector('.carta .total')?.scrollIntoView({block:'center',behavior:'smooth'})};
+$('#sum').addEventListener('click',e=>{const id=e.target.id;if(id==='dlCarta')cartaImg(e.target);if(id==='verQ')reveal();if(id==='cx'||e.target===$('#sum'))closeSheet()});
+$('#barB').onclick=()=>{const n=N(),r=calc(n);if(!st.shown&&okSlot()&&n>=cfg.minimo&&r.lines.some(l=>l.c==='fuerte'))reveal();else{renderSum();openSheet()}};
+addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
+/* ---------- eventos ---------- */
 const ch=()=>{st.shown=false};
 function all(){renderCal();renderTurnos();renderSum()}
-$('#cal').onclick=e=>{const f=e.target.dataset?.f;if(!f||e.target.disabled)return;ch();st.fecha=f;st.turno=null;st.hora=null;all()};
+$('#cal').onclick=e=>{const f=e.target.dataset?.f;if(!f||e.target.disabled)return;ch();st.fecha=f;st.turno=null;st.hora=null;all();if(mob()&&!soon())$('#boxHorario').scrollIntoView({behavior:'smooth',block:'start'})};
 $('#prev').onclick=()=>{if(mOff>0){mOff--;renderCal()}};$('#next').onclick=()=>{if(mOff<11){mOff++;renderCal()}};
+$('#sinF').onchange=e=>{ch();st.sinF=e.target.checked;if(st.sinF){st.fecha=null;st.turno=null;st.hora=null}all()};
 $('#turnos').onclick=e=>{const t=e.target.dataset?.t;if(!t||e.target.disabled)return;ch();st.turno=t;st.hora=null;renderTurnos();renderSum()};
 $('#horas').onclick=e=>{const h=e.target.dataset?.h;if(!h)return;ch();st.hora=h;renderTurnos();renderSum()};
-$('#horas').addEventListener('input',e=>{if(e.target.id==='ho'){st.hora=e.target.value;renderSum()}});
-$('#n').addEventListener('input',()=>{ch();renderMenu();renderTurnos();renderSum()});
-$('#ciu').addEventListener('change',()=>{ch();$('#otraBox').hidden=!fuera();renderTurnos();renderSum()});$('#otra').addEventListener('input',renderSum);$('#nom').addEventListener('input',renderSum);
+$('#horas').addEventListener('input',e=>{if(e.target.id==='ho'){ch();st.hora=e.target.value;renderSum()}});
+const nChg=()=>{ch();renderMenu();renderTurnos();renderSum()};
+$('#n').addEventListener('input',nChg);
+$('#nMenos').onclick=()=>{$('#n').value=Math.max(1,N()-1);nChg()};$('#nMas').onclick=()=>{$('#n').value=N()+1;nChg()};
+$('#ciu').addEventListener('change',()=>{ch();$('#otraBox').hidden=!fuera();renderTurnos();renderSum()});
+$('#otra').addEventListener('input',renderSum);$('#nom').addEventListener('input',renderSum);
 $('#menu').addEventListener('change',e=>{const id=e.target.dataset.id;if(id){ch();e.target.checked?st.sel[id]=1:(delete st.sel[id],delete st.qty[id]);renderMenu();renderSum()}});
-$('#menu').addEventListener('click',e=>{const d=e.target.dataset,id=d.m||d.p;if(!id)return;const c=cat.find(x=>x.id===id),n=+$('#n').value||0;ch();st.qty[id]=Math.max(1,qtyOf(c,n)+(d.p?1:-1));renderMenu();renderSum()});
+$('#menu').addEventListener('click',e=>{const d=e.target.dataset,id=d.m||d.p;if(!id)return;const c=cat.find(x=>x.id===id);ch();st.qty[id]=Math.max(1,qtyOf(c,N())+(d.p?1:-1));renderMenu();renderSum()});
 function init(D){cfg={...cfg,...(D.cfg||{})};cat=D.cat||[];evs=D.ev||[];WA=D.wa||WA;MIN_DAYS=D.minDias??3;BIG=D.grande??25;
   minDate=new Date(today);minDate.setDate(minDate.getDate()+MIN_DAYS);
   if(D.upd)$('#upd').textContent='Disponibilidad actualizada el '+new Date(D.upd).toLocaleDateString('es-MX',{day:'numeric',month:'long'});
   renderMenu();all()}
-minDate=new Date(today);minDate.setDate(minDate.getDate()+MIN_DAYS);all();
+all();
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(init).catch(()=>{$('#menu').innerHTML='<p class="hint">No pudimos cargar el menú. Escríbenos por WhatsApp.</p>'});
 }
 </script>
