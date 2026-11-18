@@ -12,6 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/site.css">
+<script src="js/html2canvas.min.js"></script>
 </head>
 <body class="cz-page">
 <nav class="nav solid" id="nav">
@@ -123,9 +124,27 @@ function renderSum(){
   <div class="lbl">Total estimado</div><div class="total">${money(r.total)}</div><div class="lbl">${r.total?money(r.pp)+' por persona':'Elige tu menú para ver el total'}</div>
   <ul>${r.desc?`<li>Cortesía por grupo<b>−${money(r.desc)}</b></li>`:''}<li>Anticipo para reservar (${cfg.anticipo}%)<b>${money(r.ant)}</b></li></ul>
   <a class="wa${ok?'':' off'}" href="https://wa.me/${WA}?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener">${ok?'Enviar por WhatsApp':esc(miss)}</a>
+  <button class="dl" id="dlCarta"${r.lines.length?'':' disabled'}>Descargar mi carta para compartir</button>
   <p class="small">Precio estimado, sujeto a confirmación. No incluye loza, montaje, bebidas ni meseros.</p></div>`;
   $('#barT').textContent=money(r.total);
 }
+async function cartaImg(btn){
+  if(!window.html2canvas){alert('No se pudo preparar la imagen. Intenta de nuevo.');return}
+  const old=btn.textContent;btn.disabled=true;btn.textContent='Preparando tu carta…';
+  try{
+    const src=document.querySelector('.carta'),clone=src.cloneNode(true);
+    clone.querySelectorAll('.wa,.dl,.small,ul,.total,.lbl').forEach(e=>e.remove());clone.style.outline='none';clone.style.boxShadow='inset 0 0 0 9px #fffdf9,inset 0 0 0 10px #d9cfbf';
+    const pr=document.createElement('div');pr.style.cssText='font:13px Inter;color:#6a665e;margin-top:6px';pr.textContent='experienciaiberica.com · WhatsApp 871 555 4141';clone.appendChild(pr);
+    const w=document.createElement('div');w.style.cssText='position:fixed;left:-10000px;top:0;width:420px;padding:28px;background:#f5f2ec';w.appendChild(clone);document.body.appendChild(w);
+    await document.fonts.ready;
+    const cv=await html2canvas(w,{scale:3,backgroundColor:'#f5f2ec',useCORS:true});w.remove();
+    const blob=await new Promise(ok=>cv.toBlob(ok,'image/png'));const name='Mi noche ibérica.png',file=new File([blob],name,{type:'image/png'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:'Mi noche ibérica'});return}catch(e){if(e.name==='AbortError')return}}
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);
+  }catch(e){alert('No se pudo crear la imagen de tu carta.')}
+  finally{btn.disabled=false;btn.textContent=old}
+}
+$('#sum').addEventListener('click',e=>{if(e.target.id==='dlCarta')cartaImg(e.target)});
 function all(){renderCal();renderTurnos();renderSum()}
 $('#cal').onclick=e=>{const f=e.target.dataset?.f;if(!f||e.target.disabled)return;st.fecha=f;st.turno=null;st.hora=null;all()};
 $('#prev').onclick=()=>{if(mOff>0){mOff--;renderCal()}};$('#next').onclick=()=>{if(mOff<11){mOff++;renderCal()}};
