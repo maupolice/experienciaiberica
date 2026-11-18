@@ -303,6 +303,7 @@ function renderSum(){
   let txt=`Hola, me interesa una *Experiencia Ibérica en casa*${nom?'. Soy '+nom:''}.\n\nFecha: ${fecha(st.fecha)}\nHorario: ${tt}, ${st.hora||''}\nPersonas: ${n}\n`;
   for(const[k,t]of[['entrada','Entradas'],['fuerte','Plato fuerte'],['corte','Cortes'],['postre','Postre']])if(has(k))txt+=`${t}: ${by(k)}\n`;
   txt+=`\nTotal estimado: ${money(r.total)} (${money(r.pp)} por persona)\n¿Me confirmas disponibilidad?`;
+  txt+=`\n\nCódigo: ${['EI1',st.fecha||'',st.hora||'',n,r.lines.map(l=>l.id).join('.'),nom.replace(/[|\n]/g,' ')].join('|')}`;
   const miss=!st.fecha?'Elige una fecha':!st.turno||!st.hora?'Elige el horario':!okSlot()?'Ese horario no está disponible':n<cfg.minimo?`Mínimo ${cfg.minimo} personas`:!has('fuerte')?'Elige tu plato fuerte':'';
   const open=$('#sum').classList.contains('open');
   $('#sum').innerHTML=`<div class="lbl">Total estimado${n?` para ${n} personas`:''}</div><div class="total">${money(r.total)}</div><div class="lbl">${r.total?money(r.pp)+' por persona':'Elige tu menú para ver el total'} <button class="tg" id="tg">${open?'Ocultar':'Ver detalle'}</button></div>
