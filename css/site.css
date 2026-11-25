@@ -264,3 +264,10 @@ select{width:100%;font:16px Inter;padding:11px 14px;border:1px solid var(--line)
 .cal button.full{text-decoration:none}
 .cal button.on small{color:#f3d58f}
 @media(max-width:380px){.cal button small{font-size:8px}}
+
+/* paso de horario más claro */
+.qlbl{font-weight:600;font-size:15px;margin:2px 0 8px;color:var(--ink,#211c18)}
+.horbox{margin-top:14px;padding:12px 12px 10px;border:1.5px solid var(--saf,#c48a1c);border-radius:12px;background:#fbf6ea}
+.horbox[hidden]{display:none}
+.flash{animation:flashb 1.4s ease}
+@keyframes flashb{0%,60%{box-shadow:0 0 0 4px rgba(196,138,28,.45)}100%{box-shadow:0 0 0 0 rgba(196,138,28,0)}}

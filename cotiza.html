@@ -16,7 +16,7 @@
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css?v=7">
+<link rel="stylesheet" href="css/site.css?v=8">
 <script src="js/html2canvas.min.js"></script>
 <script src="js/analytics.js?v=2" defer></script>
 </head>
@@ -40,9 +40,10 @@
       <div id="dateNote"></div>
     </div>
     <div class="box" id="boxHorario"><h3><b>2</b>Detalles</h3>
-      <div id="horWrap"><p class="hint">¿A qué hora quieren empezar a comer o cenar?</p>
+      <div id="horWrap"><p class="qlbl">¿Comida o cena?</p>
       <div class="chips" id="turnos"></div>
-      <div class="chips" id="horas" style="margin-top:10px"></div></div>
+      <div class="horbox" id="horBox" hidden><p class="qlbl">Elige la hora de inicio</p>
+      <div class="chips" id="horas"></div><p class="hint" id="horHint" style="margin:8px 0 0"></p></div></div>
       <div class="row2">
         <div><label for="n">Invitados</label><div class="cnt"><button type="button" id="nMenos" aria-label="Menos invitados">−</button><input id="n" type="number" min="1" inputmode="numeric" value="12"><button type="button" id="nMas" aria-label="Más invitados">+</button></div></div>
         <div><label for="nom">Tu nombre</label><input id="nom" autocomplete="name"></div>
@@ -109,6 +110,8 @@ function renderTurnos(){
   $('#horWrap').hidden=st.sinF;
   $('#turnos').innerHTML=[['comida',s.comida],['cena',s.cena],['otro',s.any]].map(([k,dis])=>`<button class="chip${st.turno===k?' on':''}${st.fecha&&dis&&k!=='otro'?' occ':''}" data-t="${k}"${dis||!st.fecha||soon()?' disabled':''}>${k==='otro'?'Otro horario':T[k].n+' · '+T[k].h[0]+'–'+T[k].h[4]}</button>`).join('')+(st.fecha?'':'<span class="hint" style="margin:6px 0 0">Primero elige una fecha</span>');
   $('#horas').innerHTML=st.turno&&st.turno!=='otro'?T[st.turno].h.map(h=>`<button class="chip${st.hora===h?' on':''}" data-h="${h}">${h}</button>`).join(''):st.turno==='otro'?`<div style="width:100%"><label for="ho">Hora de inicio</label><input id="ho" type="time" value="${st.hora||''}" style="max-width:200px"></div>`:'';
+  $('#horBox').hidden=!st.turno||st.sinF;
+  $('#horHint').textContent=st.turno&&st.turno!=='otro'&&st.hora?`Te marcamos las ${st.hora}. Si prefieres otra hora, tócala.`:st.turno==='otro'?'Escribe la hora a la que quieren empezar.':'';
   let msg='';
   if(st.turno==='otro')msg='Un horario fuera de comida o cena ocupa el día completo.';
   if(n>=BIG&&s.any&&st.fecha&&!st.sinF)msg=`Para ${BIG} invitados o más reservamos el día completo, y esta fecha ya tiene un evento. Prueba otra fecha.`;
@@ -158,7 +161,7 @@ function renderSum(){
   <div class="orn">✦</div>${menu||'<div class="vac">Tu menú aparecerá aquí</div>'}<div class="orn">✦</div>
   ${st.shown&&ok?`<div class="lbl">Total de tu experiencia${fuera()?' (más traslado)':''}</div><div class="total">${money(r.total)}</div><div class="lbl">Incluye chef, equipo de cocina e ingredientes · ${n} invitados</div>
   <ul>${r.desc?`<li>Cortesía por grupo<b>−${money(r.desc)}</b></li>`:''}<li>Anticipo para reservar (${cfg.anticipo}%)<b>${money(r.ant)}</b></li></ul>
-  <a class="wa" href="https://wa.me/${WA}?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener">Enviar por WhatsApp</a>`:`<button class="wa${ok?'':' off'}" id="verQ"${ok?'':' disabled'}>${ok?'Ver mi cotización':esc(miss)}</button>`}
+  <a class="wa" href="https://wa.me/${WA}?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener">Enviar por WhatsApp</a>`:`<button class="wa${ok?'':' off'}" id="verQ">${ok?'Ver mi cotización':esc(miss)}</button>`}
   ${st.shown&&ok?`<button class="dl" id="dlPrecio">Descargar mi cotización (con precio)</button>`:''}<button class="dl" id="dlCarta"${r.lines.length?'':' disabled'}>Descargar carta para mis invitados (sin precio)</button>
   <p class="small">Precio estimado, sujeto a confirmación. No incluye loza, montaje, bebidas ni meseros.</p></div>`;
   const cnt=k=>r.lines.filter(l=>l.c===k).length,parts=[];
@@ -186,8 +189,10 @@ const mob=()=>matchMedia('(max-width:900px)').matches;
 const openSheet=()=>{if(mob()){$('#sum').classList.add('open');document.body.classList.add('lock')}};
 const closeSheet=()=>{$('#sum').classList.remove('open');document.body.classList.remove('lock')};
 const reveal=()=>{st.shown=true;renderSum();if(mob())openSheet();else document.querySelector('.carta .total')?.scrollIntoView({block:'center',behavior:'smooth'})};
-$('#sum').addEventListener('click',e=>{const id=e.target.id;if(id==='dlCarta')cartaImg(e.target,false);if(id==='dlPrecio')cartaImg(e.target,true);if(id==='verQ')reveal();if(id==='cx'||e.target===$('#sum'))closeSheet()});
+$('#sum').addEventListener('click',e=>{const id=e.target.id;if(id==='dlCarta')cartaImg(e.target,false);if(id==='dlPrecio')cartaImg(e.target,true);if(id==='verQ'){if(e.target.classList.contains('off'))guide();else reveal()}if(id==='cx'||e.target===$('#sum'))closeSheet()});
 $('#barB').onclick=()=>{const n=N(),r=calc(n);if(!st.shown&&okSlot()&&n>=cfg.minimo&&r.lines.some(l=>l.c==='fuerte'||l.c==='corte'))reveal();else{renderSum();openSheet()}};
+function guide(){const el=!st.sinF&&!st.fecha?$('#cal'):!st.sinF&&!st.turno?$('#turnos'):!st.sinF&&!st.hora?$('#horBox'):!(st.sel&&Object.keys(st.sel).length)?$('#menu'):$('#boxHorario');
+  if(typeof closeSheet==='function')closeSheet();setTimeout(()=>{el.scrollIntoView({behavior:'smooth',block:'center'});const b=el.closest('.box')||el;b.classList.remove('flash');void b.offsetWidth;b.classList.add('flash')},150)}
 addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
 /* ---------- eventos ---------- */
 const ch=()=>{st.shown=false};
@@ -195,7 +200,8 @@ function all(){renderCal();renderTurnos();renderSum()}
 $('#cal').onclick=e=>{const f=e.target.dataset?.f;if(!f||e.target.disabled)return;ch();st.fecha=f;st.turno=null;st.hora=null;all();if(mob()&&!soon())$('#boxHorario').scrollIntoView({behavior:'smooth',block:'start'})};
 $('#prev').onclick=()=>{if(mOff>0){mOff--;renderCal()}};$('#next').onclick=()=>{if(mOff<11){mOff++;renderCal()}};
 $('#sinF').onchange=e=>{ch();st.sinF=e.target.checked;if(st.sinF){st.fecha=null;st.turno=null;st.hora=null}all()};
-$('#turnos').onclick=e=>{const t=e.target.dataset?.t;if(!t||e.target.disabled)return;ch();st.turno=t;st.hora=null;renderTurnos();renderSum()};
+$('#turnos').onclick=e=>{const t=e.target.dataset?.t;if(!t||e.target.disabled)return;ch();st.turno=t;st.hora=t==='comida'?'14:00':t==='cena'?'20:30':null;renderTurnos();renderSum();
+  const hb=$('#horBox');hb.classList.remove('flash');void hb.offsetWidth;hb.classList.add('flash');if(mob())hb.scrollIntoView({behavior:'smooth',block:'center'})};
 $('#horas').onclick=e=>{const h=e.target.dataset?.h;if(!h)return;ch();st.hora=h;renderTurnos();renderSum()};
 $('#horas').addEventListener('input',e=>{if(e.target.id==='ho'){ch();st.hora=e.target.value;renderSum()}});
 const nChg=()=>{ch();renderMenu();renderTurnos();renderSum()};
